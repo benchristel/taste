@@ -1,5 +1,5 @@
-import {indent, pretty, toLines, repeat} from "./formatting.impl.js"
-export {indent, pretty, toLines} from "./formatting.impl.js"
+import {indent, pretty, toLines, trimMargin, repeat} from "./formatting.impl.js"
+export {indent, pretty, toLines, trimMargin} from "./formatting.impl.js"
 
 import {test, expect} from "./testing.js"
 import {is} from "./predicates.js"
@@ -70,5 +70,66 @@ test("indent", {
 
   "indents an empty string"() {
     expect(indent(2, ""), is, "  ")
+  },
+})
+
+test("trimMargin", {
+  "given an empty string"() {
+    expect(trimMargin``, is, "")
+  },
+
+  "given a string with one line break and space"() {
+    expect(trimMargin`
+    `, is, "")
+  },
+
+  "given a string with no margin"() {
+    expect(trimMargin`hi`, is, "hi")
+  },
+
+  "removes an initial newline"() {
+    const trimmed = trimMargin`
+hi`
+    expect(trimmed, is, "hi")
+  },
+
+  "removes a final newline followed by spaces"() {
+    const trimmed = trimMargin`hi
+    `
+    expect(trimmed, is, "hi")
+  },
+
+  "removes an initial windows line ending"() {
+    const trimmed = trimMargin("\r\nfoo")
+    expect(trimmed, is, "foo")
+  },
+
+  "removes spaces from the beginning of a one-line string"() {
+    const trimmed = trimMargin("     foo")
+    expect(trimmed, is, "foo")
+  },
+
+  "removes mixed tabs and spaces"() {
+    const trimmed = trimMargin("\t foo\n\t bar")
+    expect(trimmed, is, "foo\nbar")
+  },
+
+  "does not remove mismatched tabs and spaces"() {
+    const trimmed = trimMargin("\t foo\n \tbar")
+    expect(trimmed, is, "foo\n \tbar")
+  },
+
+  "converts windows line endings to unix ones"() {
+    const trimmed = trimMargin("foo\r\nbar")
+    expect(trimmed, is, "foo\nbar")
+  },
+
+  "removes the same number of spaces from all lines"() {
+    const trimmed = trimMargin`
+      foo
+        bar
+          baz
+    `
+    expect(trimmed, is, "foo\n  bar\n    baz")
   },
 })

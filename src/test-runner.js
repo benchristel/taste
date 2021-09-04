@@ -3,7 +3,7 @@ import {runTests, successMessage} from "./test-runner.impl.js"
 
 import {test, expect} from "./testing.js"
 import {is} from "./predicates.js"
-import {toLines} from "./formatting.js"
+import {trimMargin} from "./formatting.js"
 
 test("runTests", {
   "given no tests"() {
@@ -26,12 +26,12 @@ test("runTests", {
         },
       },
     ]
-    const expectedMessage = toLines(
-      "test title",
-      "  error from test",
-      "",
-      "Tests failed."
-    )
+    const expectedMessage = trimMargin`
+      test title
+        error from test
+
+      Tests failed.
+    `
     expect(runTests(testCases), is, expectedMessage)
   },
 })

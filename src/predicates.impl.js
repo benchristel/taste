@@ -7,3 +7,7 @@ export const is = curry(function is(a, b) {
 export const not = curry(function not(predicate, subject) {
   return !predicate(subject)
 })
+
+export function isBlank(s) {
+  return /^\s*$/.test(s)
+}

@@ -1,4 +1,4 @@
-export {is, not} from "./predicates.impl.js"
+export {is, not, isBlank} from "./predicates.impl.js"
 import {is, not} from "./predicates.impl.js"
 
 import {test, expect} from "./testing.js"

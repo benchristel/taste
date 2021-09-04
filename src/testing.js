@@ -1,5 +1,5 @@
 export {test, expect, allTestCases} from "./testing.impl.js"
-import {test, expect, allTestCases} from "./testing.impl.js"
+import {test, expect} from "./testing.impl.js"
 
 function is(a, b) {
   return a === b
