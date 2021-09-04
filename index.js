@@ -1,1 +1,1 @@
-export {runTests} from "./test-runner.js"
+export {runTests} from "./src/test-runner.js"
