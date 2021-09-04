@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+
+const puppeteer = require('puppeteer')
+const path = require('path')
+
+;(async () => {
+  const browser = await puppeteer.launch()
+  const page = await browser.newPage()
+  try {
+    await page.goto("http://localhost:8080")
+  } catch (e) {
+    console.error("Could not connect to http://localhost:8080. Is the dev server running?")
+    await browser.close()
+    process.exit(2)
+    return
+  }
+
+  const message = await page.evaluate(() => globalRunTests())
+  await browser.close()
+  console.log(message)
+  if (/fail/i.test(message)) process.exit(1)
+})();

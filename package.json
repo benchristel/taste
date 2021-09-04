@@ -1,0 +1,16 @@
+{
+  "name": "taste",
+  "version": "0.0.0",
+  "description": "An elegant set of tools for writing well-tested web applications",
+  "main": "index.js",
+  "author": "Ben Christel <bchristel@pivotal.io>",
+  "license": "UNLICENSED",
+  "private": false,
+  "scripts": {
+    "test": "./test"
+  },
+  "devDependencies": {
+    "puppeteer": "^10.2.0",
+    "snowpack": "^3.8.8"
+  }
+}

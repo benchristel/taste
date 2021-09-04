@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Taste</title>
+  </head>
+  <body>
+    <code><pre id="testOutput"></pre></code>
+    <script type="module">
+import {runTests} from "./index.js"
+window.globalRunTests = runTests
+testOutput.innerText = runTests()
+    </script>
+  </body>
+</html>
