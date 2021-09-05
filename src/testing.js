@@ -28,6 +28,13 @@ test("expect", {
     expect(1, is, 1)
   },
 
+  "works with asymmetric comparisons"() {
+    const greaterThan = (a, b) => b > a
+    const greaterThanCurried = a => b => greaterThan(a, b)
+    expect(2, greaterThan, 1)
+    expect(2, greaterThanCurried(1))
+  },
+
   "throws if extra args don't meet the expectation"() {
     let caught;
     try {

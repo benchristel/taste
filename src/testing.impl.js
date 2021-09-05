@@ -9,7 +9,7 @@ export function test(subject, definitions) {
 }
 
 export function expect(subject, expectation, ...args) {
-  const pass = expectation(subject, ...args)
+  const pass = expectation(...args, subject)
   // if the expectation returns a function, that's almost
   // certainly a mistake on the part of the test-writer.
   // Possibly they forgot to pass all needed arguments to
