@@ -19,5 +19,5 @@ export function partialApply(f, ...args) {
 
 export function functionName(f) {
   if (f.originalFunction) return functionName(f.originalFunction)
-  return f.prettyName || f.name || "<anonymous>"
+  return f.prettyName || f.name
 }

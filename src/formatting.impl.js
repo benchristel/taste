@@ -2,18 +2,37 @@ import {curry, functionName} from "./curry.js"
 import {firstOf, lastOf} from "./indexables.js"
 import {isBlank} from "./predicates.js"
 
+export function prettyFunctionName(f) {
+  return functionName(f) || "<function>"
+}
+
 export function pretty(x) {
   if (typeof x === "function") {
     if (x.partialArgs) {
-      return `${functionName(x)}(${x.partialArgs.map(pretty).join(", ")})`
+      return `${prettyFunctionName(x)}(${x.partialArgs.map(pretty).join(", ")})`
     } else {
-      return functionName(x)
+      return prettyFunctionName(x)
     }
   }
   if (typeof x === "string") {
-    return `"${x}"`
+    return quote(x)
   }
   return String(x)
+}
+
+export function quote(s) {
+  return '"' + s
+    .replace(/\\/g, "\\\\")
+    .replace(/\n/g, "\\n")
+    .replace(/\t/g, "\\t")
+    .replace(/"/g, '\\"')
+    .replace(/[\x00-\x1f\x7f]/g, hexEscape)
+    + '"'
+}
+
+export function hexEscape(c) {
+  const hex = c.charCodeAt(0).toString(16)
+  return "\\x" + (hex.length < 2 ? "0" + hex : hex)
 }
 
 export function indent(level, s) {

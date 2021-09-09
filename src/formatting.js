@@ -1,5 +1,9 @@
-import {indent, pretty, toLines, trimMargin, repeat} from "./formatting.impl.js"
-export {indent, pretty, toLines, trimMargin} from "./formatting.impl.js"
+import {
+  indent, pretty, toLines, trimMargin, quote, repeat,
+} from "./formatting.impl.js"
+export {
+  indent, pretty, toLines, trimMargin,
+} from "./formatting.impl.js"
 
 import {test, expect} from "./testing.js"
 import {is} from "./predicates.js"
@@ -24,11 +28,59 @@ test("repeat", {
 })
 
 test("pretty", {
+  "formats numbers"() {
+    expect(pretty(1), is, "1")
+    expect(pretty(2.5), is, "2.5")
+    expect(pretty(-4), is, "-4")
+    expect(pretty(1e21), is, "1e+21")
+  },
+
+  "represents null as 'null'"() {
+    expect(pretty(null), is, "null")
+  },
+
+  "represents undefined as 'undefined'"() {
+    expect(pretty(undefined), is, "undefined")
+  },
+
+  "represents booleans as 'true' and 'false'"() {
+    expect(pretty(true), is, "true")
+    expect(pretty(false), is, "false")
+  },
+
+  "represents the empty string as a pair of quotes"() {
+    expect(pretty(""), is, '""')
+  },
+
   "quotes a string"() {
     expect(pretty("hi"), is, '"hi"')
   },
 
-  "prints a function name"() {
+  "escapes newlines"() {
+    expect(pretty("\n\n"), is, '"\\n\\n"')
+  },
+
+  "escapes quotes"() {
+    expect(pretty('""'), is, '"\\"\\""')
+  },
+
+  "puts slashes around regexen"() {
+    expect(pretty(/[a-z]+/), is, '/[a-z]+/')
+  },
+
+  "escapes literal slashes in regexen"() {
+    expect(pretty(/http:\/\//), is, '/http:\\/\\//')
+  },
+
+  "represents an anonymous function as <function>"() {
+    expect(pretty(() => {}), is, "<function>")
+  },
+
+  "represents an anonymous function as <function>"() {
+    expect(pretty(() => {}), is, "<function>")
+  },
+
+  "formats a function name"() {
     expect(pretty(pretty), is, "pretty")
   },
 
@@ -41,6 +93,11 @@ test("pretty", {
     expect(pretty(foo(1)), is, "foo(1)")
     expect(pretty(foo(1)(2)), is, "foo(1, 2)")
     expect(pretty(foo(0, 1)), is, "foo(0, 1)")
+  },
+
+  "pretty-formats function arguments"() {
+    const foo = curry(function foo(a, b, c) {})
+    expect(pretty(foo("hi")), is, 'foo("hi")')
   },
 })
 
@@ -131,5 +188,29 @@ hi`
           baz
     `
     expect(trimmed, is, "foo\n  bar\n    baz")
+  },
+})
+
+test("quote", {
+  "escapes quotes"() {
+    expect(quote('""'), is, '"\\"\\""')
+  },
+
+  "escapes newlines"() {
+    expect(quote('\n\n'), is, '"\\n\\n"')
+  },
+
+  "escapes backslashes"() {
+    expect(quote('\\a\\'), is, '"\\\\a\\\\"')
+  },
+
+  "escapes tabs"() {
+    expect(quote("\t\t"), is, '"\\t\\t"')
+  },
+
+  "escapes nonprinting ASCII"() {
+    expect(
+      quote("\x00\x07\x1f\x7f"),
+      is, '"\\x00\\x07\\x1f\\x7f"')
   },
 })
