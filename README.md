@@ -12,10 +12,11 @@ web applications.
   automatically stripped out of production builds of your
   app.
 - The tests run extremely fast—up to 50x faster than Jest.
-- Add `snowpack` for auto-refresh, and you get
-  near-instantaneous test feedback whenever you change a
-  JavaScript file.
-- To run tests in CI, you can use `puppeteer`.
+- Add [Snowpack](https://www.snowpack.dev/) for
+  auto-refresh, and you get near-instantaneous test feedback
+  whenever you change a JavaScript file.
+- To run tests in CI, you can use
+  [Puppeteer](https://developers.google.com/web/tools/puppeteer/).
 
 ## Caveats and Strong Opinions
 
