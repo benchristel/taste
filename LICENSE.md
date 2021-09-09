@@ -3,8 +3,10 @@
 Copyright 2021, Ben Christel.
 
 You may use this software, but must pay the author ten
-billion dollars (USD) every time you download it. To arrange
-payment, please contact `benchristel@gmail.com`.
+billion dollars ($10,000,000,000 USD) to do so. To arrange
+payment, please contact `benchristel@gmail.com`. I'll
+probably be willing to waive the fee if you're planning to
+use Taste for something ethical.
 
 If I find out you're using this software and haven't paid
 for it, I'll sue the crap out of you, to the tune of ten
