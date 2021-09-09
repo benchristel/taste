@@ -17,12 +17,45 @@ web applications.
   JavaScript file.
 - To run tests in CI, you can use `puppeteer`.
 
-## Caveats
+## Caveats and Strong Opinions
 
 - Only synchronous tests are supported: no
   `Promise`s, async tests, or timers. This isn't as bad as
   it sounds. Refactor your code so the interesting,
   test-worthy stuff is synchronous, and you'll be happier.
+- There are no equivalents of Jest's `beforeEach` etc.,
+  nor are there nested `describe` or `context` blocks. You
+  can de-duplicate repeated setup by simply extracting
+  functions and calling them, as you would for duplicated
+  production code. In my experience, this makes for more
+  readable tests in the long run.
+
+## Example
+
+Here's an example of a Taste test:
+
+```js
+import {test, expect, is} from "taste"
+import {repeat} from "./repeat.impl.js"
+
+test("repeat", {
+  "repeats a string zero times"() {
+    expect(repeat(0, "ha"), is, "")
+  },
+
+  "repeats a string once"() {
+    expect(repeat(1, "eh"), is, "eh")
+  },
+
+  "repeats a string several times"() {
+    expect(repeat(4, "na"), is, "nananana")
+  },
+
+  "repeats the empty string"() {
+    expect(repeat(10, ""), is, "")
+  },
+})
+```
 
 ## Setup
 
