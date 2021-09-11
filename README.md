@@ -1,7 +1,6 @@
 # taste
 
-An elegant set of JavaScript tools for writing well-tested
-web applications.
+An opinionated, elegant test library for web applications.
 
 ## What does it do?
 
@@ -31,9 +30,9 @@ web applications.
   production code. In my experience, this makes for more
   readable tests in the long run.
 
-## Example
+## Syntax
 
-Here's an example of a Taste test:
+Here's an example of a Taste test for a `repeat` function.
 
 ```js
 import {test, expect, is} from "taste"
@@ -57,6 +56,10 @@ test("repeat", {
   },
 })
 ```
+
+Taste's minimalistic syntax supports both BDD-style and
+xUnit test naming conventions. You can name your tests after
+behaviors, scenarios, or test subjects, as you prefer.
 
 ## Setup
 
