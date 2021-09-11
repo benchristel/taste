@@ -175,6 +175,33 @@ test("pretty", {
     `)
   },
 
+  "avoids infinite recursion in arrays"() {
+    const a = []
+    const b = [a]
+    a.push(b)
+    expect(pretty(a), is, "[[<circular reference>]]")
+  },
+
+  "avoids infinite recursion in function args"() {
+    const a = []
+    const f = curry(function f(a, b) {})
+    a.push(f(a))
+    expect(pretty(a), is, "[f(<circular reference>)]")
+  },
+
+  "avoids infinite recursion in POJOs"() {
+    const obj = {}
+    obj.foo = obj
+    expect(pretty(obj), is, "{foo: <circular reference>}")
+  },
+
+  "avoids infinite recursion in instances of classes"() {
+    class MyClass {}
+    const obj = new MyClass()
+    obj.foo = obj
+    expect(pretty(obj), is, "MyClass {foo: MyClass <circular reference>}")
+  },
+
   "formats a template string"() {
     expect(pretty(`${1}`), is, '"1"')
   },
@@ -295,6 +322,10 @@ hi`
 })
 
 test("quote", {
+  "stringifies its argument"() {
+    expect(quote(1), is, '"1"')
+  },
+
   "escapes quotes"() {
     expect(quote('""'), is, '"\\"\\""')
   },

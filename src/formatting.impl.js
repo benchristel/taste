@@ -7,53 +7,66 @@ export function prettyFunctionName(f) {
 }
 
 export function pretty(x) {
-  if (null === x)
-    return "null"
-  if ("function" === typeof x)
-    return prettyFunction(x)
-  if ("string" === typeof x)
-    return quote(x)
-  if ("bigint" === typeof x)
-    return `${x}n`
-  if (Array.isArray(x))
-    return prettyArray(x)
-  if (x instanceof RegExp)
+  const stack = []
+  return _pretty(x)
+
+  function _pretty(x) {
+    if (null === x)
+      return "null"
+    if ("function" === typeof x)
+      return preventInfiniteLoop(x, prettyFunction)
+    if ("string" === typeof x)
+      return quote(x)
+    if ("bigint" === typeof x)
+      return `${x}n`
+    if (Array.isArray(x))
+      return preventInfiniteLoop(x, prettyArray)
+    if (x instanceof RegExp)
+      return String(x)
+    if (x instanceof Error)
+      return `${prettyFunctionName(x.constructor)}(${quote(x.message)})`
+    if (x && Object === x.constructor)
+      return preventInfiniteLoop(x, prettyObject)
+    if ("object" === typeof x)
+      return `${prettyFunctionName(x.constructor)} ${preventInfiniteLoop(x, prettyObject)}`
     return String(x)
-  if (x instanceof Error)
-    return `${pretty(x.constructor)}(${pretty(x.message)})`
-  if (x && Object === x.constructor)
-    return prettyObject(x)
-  if ("object" === typeof x)
-    return `${pretty(x.constructor)} ${prettyObject(x)}`
-  return String(x)
-}
-
-function prettyFunction(f) {
-  if (f.partialArgs) {
-    return `${prettyFunctionName(f)}(${f.partialArgs.map(pretty).join(", ")})`
-  } else {
-    return prettyFunctionName(f)
   }
-}
 
-function prettyArray(a) {
-  const innards = a.map(pretty)
-  if (a.length < 2) {
-    return "[" + innards + "]"
-  } else {
-    return "[\n"
-      + indent(2, innards.join(",\n"))
-      + "\n]"
+  function preventInfiniteLoop(x, cb) {
+    if (stack.indexOf(x) > -1) return "<circular reference>"
+    stack.push(x)
+    const result = cb(x)
+    stack.pop()
+    return result
   }
-}
 
-function prettyObject(x) {
-  const entries = Object.entries(x)
-  const innards = entries.map(([k, v]) => `${prettyKey(k)}: ${pretty(v)}`)
-  if (entries.length < 2) {
-    return "{" + innards + "}"
-  } else {
-    return "{\n" + indent(2, innards.join(",\n")) + "\n}"
+  function prettyFunction(f) {
+    if (f.partialArgs) {
+      return `${prettyFunctionName(f)}(${f.partialArgs.map(_pretty).join(", ")})`
+    } else {
+      return prettyFunctionName(f)
+    }
+  }
+
+  function prettyArray(a) {
+    const innards = a.map(_pretty)
+    if (a.length < 2) {
+      return "[" + innards + "]"
+    } else {
+      return "[\n"
+        + indent(2, innards.join(",\n"))
+        + "\n]"
+    }
+  }
+
+  function prettyObject(x) {
+    const entries = Object.entries(x)
+    const innards = entries.map(([k, v]) => `${prettyKey(k)}: ${_pretty(v)}`)
+    if (entries.length < 2) {
+      return "{" + innards + "}"
+    } else {
+      return "{\n" + indent(2, innards.join(",\n")) + "\n}"
+    }
   }
 }
 
@@ -62,7 +75,7 @@ function prettyKey(k) {
 }
 
 export function quote(s) {
-  return '"' + s
+  return '"' + String(s)
     .replace(/\\/g, "\\\\")
     .replace(/\n/g, "\\n")
     .replace(/\t/g, "\\t")
