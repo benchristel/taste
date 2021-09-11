@@ -1,19 +1,21 @@
-export const allTestCases = []
+export const {test, getAllTests} = createSuite()
 
-export function test(subject, definitions) {
-  // The "pure" annotation tells bundlers like webpack
-  // to remove a function call if the return value is
-  // unused. The effect of doing that here is that none of
-  // the tests get included in the bundled code.
-  /* @__PURE__ */ _test(subject, definitions)
-}
+export function createSuite() {
+  const testCases = []
 
-function _test(subject, definitions) {
-  allTestCases.push(
-    ...Object.entries(definitions)
-      .map(([behavior, fn]) =>
-        TestCase(`${subject} ${behavior}`, fn))
-  )
+  return {test, getAllTests}
+
+  function test(subject, definitions) {
+    testCases.push(
+      ...Object.entries(definitions)
+        .map(([behavior, fn]) =>
+          TestCase(`${subject} ${behavior}`, fn))
+    )
+  }
+
+  function getAllTests() {
+    return testCases
+  }
 }
 
 export function expect(subject, expectation, ...args) {

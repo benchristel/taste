@@ -8,8 +8,9 @@
     <code><pre id="testOutput"></pre></code>
     <script type="module">
 import {runTests} from "./index.js"
+import {getAllTests} from "./src/testing.js"
 window.globalRunTests = runTests
-testOutput.innerText = runTests()
+testOutput.innerText = runTests(getAllTests())
     </script>
   </body>
 </html>

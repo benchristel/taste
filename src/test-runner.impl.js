@@ -1,7 +1,6 @@
-import {allTestCases} from "./testing.js"
 import {pretty, indent, toLines} from "./formatting.js"
 
-export function runTests(testCases = allTestCases) {
+export function runTests(testCases) {
   const failures = testCases
     .map(run)
     .filter(Boolean)

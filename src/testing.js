@@ -1,8 +1,12 @@
-export {test, expect, allTestCases} from "./testing.impl.js"
-import {test, expect} from "./testing.impl.js"
+export {expect, createSuite, test, getAllTests} from "./testing.impl.js"
+import {expect, createSuite, test} from "./testing.impl.js"
 
 function is(a, b) {
   return a === b
+}
+
+function isEmpty(a) {
+  return a.length === 0
 }
 
 function isOne(x) {
@@ -43,5 +47,24 @@ test("expect", {
       caught = e
     }
     if (!caught) throw new Error("nothing thrown")
+  },
+})
+
+test("a suite", {
+  "starts with no tests"() {
+    expect(createSuite().getAllTests(), isEmpty)
+  },
+
+  "registers tests independently of other suites"() {
+    const theSuite = createSuite()
+    theSuite.test("some object", {
+      "does something"() {},
+    })
+    expect(
+      theSuite.getAllTests()[0].title,
+      is, "some object does something"
+    )
+    const aDifferentSuite = createSuite()
+    expect(aDifferentSuite.getAllTests(), isEmpty)
   },
 })
