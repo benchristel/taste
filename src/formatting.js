@@ -68,6 +68,12 @@ test("pretty", {
     expect(pretty(new SyntaxError("uh oh")), is, 'SyntaxError("uh oh")')
   },
 
+  "represents the class of an error with its own constructor property"() {
+    const e = new SyntaxError("uh oh")
+    e.constructor = 1
+    expect(pretty(e), is, 'SyntaxError("uh oh")')
+  },
+
   "formats dates"() {
     expect(
       pretty(new Date("2012-12-21T23:59:59Z")),
@@ -153,6 +159,17 @@ test("pretty", {
       foo = 1
     }
     expect(pretty(new SomeClass()), is, "SomeClass {foo: 1}")
+  },
+
+  "formats a POJO with a constructor property"() {
+    expect(pretty({constructor: 1}), is, "{constructor: 1}")
+  },
+
+  "formats a class instance with an own constructor property"() {
+    class SomeClass {}
+    const obj = new SomeClass()
+    obj.constructor = 1
+    expect(pretty(obj), is, "SomeClass {constructor: 1}")
   },
 
   "omits prototype methods"() {

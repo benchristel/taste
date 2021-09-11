@@ -26,11 +26,11 @@ export function pretty(x) {
     if (x instanceof RegExp)
       return String(x)
     if (x instanceof Error)
-      return `${prettyFunctionName(x.constructor)}(${quote(x.message)})`
-    if (x && Object === x.constructor)
+      return `${prettyConstructor(x)}(${quote(x.message)})`
+    if (x && Object === x.__proto__.constructor)
       return preventInfiniteLoop(x, prettyObject)
     if ("object" === typeof x)
-      return `${prettyFunctionName(x.constructor)} ${preventInfiniteLoop(x, prettyObject)}`
+      return `${prettyConstructor(x)} ${preventInfiniteLoop(x, prettyObject)}`
     return String(x)
   }
 
@@ -74,6 +74,10 @@ export function pretty(x) {
 
 function prettyKey(k) {
   return /^[a-zA-Z0-9_$]+$/.test(k) ? k : quote(k)
+}
+
+function prettyConstructor(obj) {
+  return prettyFunctionName(obj.__proto__.constructor)
 }
 
 export function quote(s) {
