@@ -35,6 +35,14 @@ test("pretty", {
     expect(pretty(1e21), is, "1e+21")
   },
 
+  "represents NaN as 'NaN'"() {
+    expect(pretty(NaN), is, "NaN")
+  },
+
+  "represents bigints"() {
+    expect(pretty(100n), is, "100n")
+  },
+
   "represents null as 'null'"() {
     expect(pretty(null), is, "null")
   },
@@ -46,6 +54,18 @@ test("pretty", {
   "represents booleans as 'true' and 'false'"() {
     expect(pretty(true), is, "true")
     expect(pretty(false), is, "false")
+  },
+
+  "represents symbols as 'Symbol()'"() {
+    expect(pretty(Symbol()), is, "Symbol()")
+  },
+
+  "represents errors"() {
+    expect(pretty(new Error("uh oh")), is, 'Error("uh oh")')
+  },
+
+  "represents the class of an error"() {
+    expect(pretty(new SyntaxError("uh oh")), is, 'SyntaxError("uh oh")')
   },
 
   "represents the empty string as a pair of quotes"() {
@@ -72,8 +92,91 @@ test("pretty", {
     expect(pretty(/http:\/\//), is, '/http:\\/\\//')
   },
 
-  "represents an anonymous function as <function>"() {
-    expect(pretty(() => {}), is, "<function>")
+  "represents an empty array as []"() {
+    expect(pretty([]), is, "[]")
+  },
+
+  "formats an array with one element inline"() {
+    expect(pretty(["a"]), is, '["a"]')
+  },
+
+  "formats an array with two elements"() {
+    expect(pretty(["a", "b"]), is, trimMargin`
+      [
+        "a",
+        "b"
+      ]
+    `)
+  },
+
+  "formats an empty object"() {
+    expect(pretty({}), is, "{}")
+  },
+
+  "formats an object with one property inline"() {
+    expect(pretty({foo: "a"}), is, '{foo: "a"}')
+  },
+
+  "formats an object with two properties"() {
+    expect(pretty({foo: "a", bar: "b"}), is, trimMargin`
+      {
+        foo: "a",
+        bar: "b"
+      }
+    `)
+  },
+
+  "quotes object keys that are not valid identifiers"() {
+    expect(pretty({"hello, world": 1}), is, '{"hello, world": 1}')
+  },
+
+  "quotes an empty object key"() {
+    expect(pretty({"": 1}), is, '{"": 1}')
+  },
+
+  "doesn't quote a key that is weird but still identifiery"() {
+    expect(pretty({$5_word: "casuistry"}), is, '{$5_word: "casuistry"}')
+  },
+
+  "doesn't quote a numeric key"() {
+    expect(pretty({0: 1}), is, '{0: 1}')
+  },
+
+  "formats an object with a constructor"() {
+    class SomeClass {
+      foo = 1
+    }
+    expect(pretty(new SomeClass()), is, "SomeClass {foo: 1}")
+  },
+
+  "omits prototype methods"() {
+    class SomeClass {
+      aMethod() {}
+    }
+    expect(pretty(new SomeClass()), is, "SomeClass {}")
+  },
+
+  "formats nested objects and arrays"() {
+    const obj = {
+      foo: [{kludge: 3, qux: 4}, 2],
+      bar: {baz: 1}
+    }
+    expect(pretty(obj), is, trimMargin`
+      {
+        foo: [
+          {
+            kludge: 3,
+            qux: 4
+          },
+          2
+        ],
+        bar: {baz: 1}
+      }
+    `)
+  },
+
+  "formats a template string"() {
+    expect(pretty(`${1}`), is, '"1"')
   },
 
   "represents an anonymous function as <function>"() {
