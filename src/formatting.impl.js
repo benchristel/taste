@@ -21,6 +21,8 @@ export function pretty(x) {
       return `${x}n`
     if (Array.isArray(x))
       return preventInfiniteLoop(x, prettyArray)
+    if (x instanceof Date)
+      return `Date(${x.toISOString().replace("T", " ").replace("Z", " UTC")})`
     if (x instanceof RegExp)
       return String(x)
     if (x instanceof Error)

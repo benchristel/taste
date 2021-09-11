@@ -68,6 +68,12 @@ test("pretty", {
     expect(pretty(new SyntaxError("uh oh")), is, 'SyntaxError("uh oh")')
   },
 
+  "formats dates"() {
+    expect(
+      pretty(new Date("2012-12-21T23:59:59Z")),
+      is, "Date(2012-12-21 23:59:59.000 UTC)")
+  },
+
   "represents the empty string as a pair of quotes"() {
     expect(pretty(""), is, '""')
   },
