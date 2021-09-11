@@ -10,9 +10,9 @@
 import {runTests, reportsFailure} from "./index.js"
 import {getAllTests} from "./src/testing.js"
 window.globalRunTests = runTests
-const results = runTests(getAllTests())
-testOutput.innerText = results
-document.title = reportsFailure(results)
+window.testResults = runTests(getAllTests())
+testOutput.innerText = testResults
+document.title = reportsFailure(testResults)
   ? "Taste - FAILED"
   : "Taste"
     </script>

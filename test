@@ -15,7 +15,7 @@ const path = require('path')
     return
   }
 
-  const message = await page.evaluate(() => globalRunTests())
+  const message = await page.evaluate(() => testResults)
   await browser.close()
   console.log(message)
   if (/fail/i.test(message)) process.exit(1)
