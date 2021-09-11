@@ -1,8 +1,8 @@
-export {runTests} from "./test-runner.impl.js"
-import {runTests, successMessage} from "./test-runner.impl.js"
+export {runTests, reportsFailure} from "./test-runner.impl.js"
+import {runTests, reportsFailure, successMessage, failureMessage} from "./test-runner.impl.js"
 
 import {test, expect} from "./testing.js"
-import {is} from "./predicates.js"
+import {is, not} from "./predicates.js"
 import {trimMargin} from "./formatting.js"
 
 test("runTests", {
@@ -48,4 +48,22 @@ test("successMessage", {
   "for two tests"() {
     expect(successMessage(2), is, "2 tests ran, and found no issues.")
   },
+})
+
+test("reportsFailure", {
+  "given success"() {
+    expect(reportsFailure(successMessage(10)), is, false)
+  },
+
+  "given failure"() {
+    expect(reportsFailure(failureMessage([])), is, true)
+  },
+
+  "matches 'fail' case insensitively"() {
+    expect("FAIL", reportsFailure)
+    expect("A FAILURE", reportsFailure)
+    expect("fail", reportsFailure)
+    expect("something failed", reportsFailure)
+    expect("f", not(reportsFailure))
+  }
 })

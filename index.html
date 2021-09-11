@@ -2,15 +2,19 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Taste</title>
+    <title>Taste - ...</title>
   </head>
   <body>
     <code><pre id="testOutput"></pre></code>
     <script type="module">
-import {runTests} from "./index.js"
+import {runTests, reportsFailure} from "./index.js"
 import {getAllTests} from "./src/testing.js"
 window.globalRunTests = runTests
-testOutput.innerText = runTests(getAllTests())
+const results = runTests(getAllTests())
+testOutput.innerText = results
+document.title = reportsFailure(results)
+  ? "Taste - FAILED"
+  : "Taste"
     </script>
   </body>
 </html>

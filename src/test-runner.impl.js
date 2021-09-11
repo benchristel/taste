@@ -24,6 +24,10 @@ export function failureMessage(failures) {
   return failures.join("\n\n") + "\n\nTests failed."
 }
 
+export function reportsFailure(testOutput) {
+  return /fail/i.test(testOutput)
+}
+
 export function run(testCase) {
   const {title, fn} = testCase
   try {
