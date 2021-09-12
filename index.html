@@ -14,7 +14,7 @@ window.testResults = runTests(getAllTests())
 testOutput.innerText = testResults
 document.title = reportsFailure(testResults)
   ? "Taste - FAILED"
-  : "Taste"
+  : "Taste - " + testResults
     </script>
   </body>
 </html>
