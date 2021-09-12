@@ -48,6 +48,22 @@ test("expect", {
     }
     if (!caught) throw new Error("nothing thrown")
   },
+
+  "throws if you forget part of the assertion"() {
+    const curriedIs = a => b => a === b
+    let caught;
+    try {
+      expect(1, curriedIs)
+    } catch (e) {
+      caught = e
+    }
+    if (!caught) throw new Error("nothing thrown")
+    expect(
+      caught.message,
+      is,
+      "The matcher function `<function>` returned a function instead of a boolean. You might need to pass another argument to it.",
+    )
+  }
 })
 
 test("a suite", {
