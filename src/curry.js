@@ -1,4 +1,4 @@
-export {curry, functionName, partialApply} from "./curry.impl.js"
+export {curry, functionName, partialArgs, curriedFunction, originalFunction} from "./curry.impl.js"
 import {curry, functionName} from "./curry.impl.js"
 
 import {test, expect} from "./testing.js"
@@ -38,4 +38,12 @@ test("curry", {
     const add3 = curry((a, b, c) => a + b + c)
     expect(add3()(1)()(2, 3), is, 6)
   },
+
+  "is idempotent"() {
+    let add = curry(function add(a, b) { return a + b })
+    add = curry(add)
+    expect(add(1)(2), is, 3)
+    expect(add(3, 4), is, 7)
+    expect(functionName(add), is, "add")
+  }
 })

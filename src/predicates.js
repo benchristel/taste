@@ -1,6 +1,7 @@
-export {is, not, equals, isBlank} from "./predicates.impl.js"
-import {is, not, equals} from "./predicates.impl.js"
+export {is, not, equals, which, isBlank} from "./predicates.impl.js"
+import {is, not, equals, which} from "./predicates.impl.js"
 
+import {curry} from "./curry.js"
 import {test, expect} from "./testing.js"
 
 const eq = (a, b) => a === b
@@ -71,6 +72,11 @@ test("equals", {
     expect({}, equals, {})
   },
 
+  "given an array and an object"() {
+    expect({}, not(equals([])))
+    expect([], not(equals({})))
+  },
+
   "given objects with different numbers of keys"() {
     expect({foo: 1}, not(equals({})))
     expect({}, not(equals({foo: 1})))
@@ -129,6 +135,10 @@ test("equals", {
     expect(equals({foo: 1}), equals, equals({foo: 1}))
   },
 
+  "equates a partially applied function with no args to an unapplied function"() {
+    expect(equals(), equals, equals)
+  },
+
   "given partially applied functions with different arguments"() {
     expect(equals({foo: 2}), not(equals(equals({foo: 1}))))
   },
@@ -139,6 +149,36 @@ test("equals", {
 
   "given equal dates"() {
     expect(new Date("1999-12-21"), equals(new Date("1999-12-21")))
+  },
+
+  "given a custom matcher"() {
+    const contains = curry(function contains(needle, haystack) {
+      return haystack.includes(needle)
+    })
+    expect(
+      {foo: "hello"},
+      equals,
+      {foo: which(contains("ell"))},
+    )
+
+    expect(
+      {foo: "blah"},
+      not(equals(
+        {foo: which(contains("ell"))},
+      )),
+    )
+  },
+
+  "if you mistakenly use `which` without passing arguments"() {
+    const contains = curry(function contains(needle, haystack) {
+      return haystack.includes(needle)
+    })
+    expect(
+      {foo: "hello"},
+      not(equals(
+        {foo: which()},
+      )),
+    )
   },
 })
 

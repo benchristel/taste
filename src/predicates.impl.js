@@ -1,13 +1,20 @@
-import {curry} from "./curry.js"
+import {curry, curriedFunction, partialArgs, originalFunction} from "./curry.js"
+
+export const which = curry(function which(predicate, x) {
+  return predicate(x)
+})
 
 export const equals = curry(function equals(a, b) {
+  if (isCustomMatcher(a)) {
+    return a(b)
+  }
   if (Array.isArray(a) && Array.isArray(b)) {
     return a.length === b.length
       && a.every((_, i) => equals(a[i], b[i]))
   }
   if (a instanceof Function && b instanceof Function) {
-    if (a.originalFunction && a.originalFunction === b.originalFunction) {
-      return equals(a.partialArgs, b.partialArgs)
+    if (originalFunction(a) && originalFunction(a) === originalFunction(b)) {
+      return equals(partialArgs(a), partialArgs(b))
     }
     return a === b
   }
@@ -34,4 +41,10 @@ export const not = curry(function not(predicate, subject) {
 
 export function isBlank(s) {
   return /^\s*$/.test(s)
+}
+
+function isCustomMatcher(f) {
+  return f instanceof Function
+    && curriedFunction(f) === which
+    && partialArgs(f).length === 1
 }

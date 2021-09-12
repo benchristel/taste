@@ -1,4 +1,4 @@
-import {curry, functionName} from "./curry.js"
+import {curry, partialArgs, functionName} from "./curry.js"
 import {firstOf, lastOf} from "./indexables.js"
 import {isBlank} from "./predicates.js"
 
@@ -43,8 +43,8 @@ export function pretty(x) {
   }
 
   function prettyFunction(f) {
-    if (f.partialArgs) {
-      return `${prettyFunctionName(f)}(${f.partialArgs.map(_pretty).join(", ")})`
+    if (partialArgs(f).length) {
+      return `${prettyFunctionName(f)}(${partialArgs(f).map(_pretty).join(", ")})`
     } else {
       return prettyFunctionName(f)
     }
