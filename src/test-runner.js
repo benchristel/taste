@@ -2,7 +2,7 @@ export {runTests, reportsFailure} from "./test-runner.impl.js"
 import {runTests, reportsFailure, successMessage, failureMessage} from "./test-runner.impl.js"
 
 import {test, expect} from "./testing.js"
-import {is, not} from "./predicates.js"
+import {is, not, equals} from "./predicates.js"
 import {trimMargin} from "./formatting.js"
 
 test("runTests", {
@@ -22,17 +22,20 @@ test("runTests", {
       {
         title: "test title",
         fn() {
-          throw new Error("error from test")
+          const e = new Error("error from test")
+          e.stack = "fake stacktrace\nline 2\nline 3\nline 4"
+          throw e
         },
       },
     ]
     const expectedMessage = trimMargin`
       test title
-        error from test
+        Error("error from test") thrown
+          fake stacktrace
 
       Tests failed.
     `
-    expect(runTests(testCases), is, expectedMessage)
+    expect(runTests(testCases), equals, expectedMessage)
   },
 })
 

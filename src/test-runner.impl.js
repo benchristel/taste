@@ -1,4 +1,4 @@
-import {pretty, indent, toLines} from "./formatting.js"
+import {pretty, indent, toLines, trimMargin} from "./formatting.js"
 
 export function runTests(testCases) {
   const failures = testCases
@@ -46,7 +46,8 @@ export function formatFailureMessage(error) {
       ...error.args,
     )
   }
-  return error.message
+  return pretty(error) + " thrown\n"
+    + indent(2, simplifyStacktrace(error.stack))
 }
 
 export function formatExpectationFailure(...args) {
@@ -55,4 +56,15 @@ export function formatExpectationFailure(...args) {
     ...args.map(a => indent(2, pretty(a) + ",")),
     ")"
   )
+}
+
+function simplifyStacktrace(stack) {
+  const lines = trimMargin(stack).split("\n")
+  return lines.slice(0, lines.length - 3)
+    .map(line =>
+      line
+        .replace(/(file:\/\/|http:\/\/[^/]*)/, "")
+        .replace(/^([^@]*)@(.*)$/, "at $1 ($2)")
+    )
+    .join("\n")
 }
