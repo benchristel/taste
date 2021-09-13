@@ -10,9 +10,6 @@ const suite = createSuite()
 export const {getAllTests} = suite
 
 export function test(...args) {
-  // The "pure" annotation tells bundlers like webpack
-  // to remove a function call if the return value is
-  // unused. The effect of doing that here is that none of
-  // the tests get included in the bundled code.
-  /* @__PURE__ */ suite.test(...args)
+  if (typeof process === "undefined" || process.env.NODE_ENV !== "production")
+    suite.test(...args)
 }
