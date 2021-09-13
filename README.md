@@ -35,21 +35,22 @@ test("greet", {
   feedback whenever you change a JavaScript file.
 - To run tests in CI or as a pre-push hook, you can set up
   [Puppeteer](https://developers.google.com/web/tools/puppeteer/),
-  which runs the tests in a headless Chrome browser. That might
-  sound complicated, but it's _still slightly faster than
-  using Jest_ (1.2s vs. 1.3s startup overhead on my machine).
+  which runs the tests in a headless Chrome browser. That
+  might sound like a lot of overhead, but it's _still
+  slightly faster than using Jest_ (1.2s vs. 1.3s startup
+  time on my machine).
 - Adding your own matchers is simple as can be: any function
   that returns a boolean can be used as a matcher. Test
   failures still get pretty-formatted as you'd expect.
-- You can easily loosen specific pieces of deep-equality
-  assertions, making Taste a good choice for property-based
-  testing, runtime typechecking, or testing non-deterministic
-  code. For example:
 - Taste's minimalistic syntax supports both BDD-style and
   xUnit test naming conventions. You can name your tests
   after behaviors, scenarios, or test subjects, as you
   prefer. The outline of your tests will be readable no
   matter what convention you choose.
+- You can easily insert custom matchers into deep-equality
+  assertions, to compare subtrees however you choose.
+  This makes Taste a good choice for property-based testing, runtime typechecking, or testing non-deterministic code.
+  For example:
 
   ```js
   import {test, expect, equals, curry, which} from "taste"
