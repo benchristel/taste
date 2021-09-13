@@ -1,5 +1,5 @@
-export {runTests} from "./test-runner.impl.js"
-import {runTests, debugLogs} from "./test-runner.impl.js"
+export {runTests, debug} from "./test-runner.impl.js"
+import {runTests, debug, debugLogs} from "./test-runner.impl.js"
 
 import {curry} from "./curry.js"
 import {test, expect, ExpectationFailure} from "./testing.js"

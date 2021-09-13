@@ -30,4 +30,6 @@ export function errorFrom(f) {
 }
 
 export const debugLogs = []
-window.debug = (...args) => debugLogs.push(args)
+export function debug(...args) {
+  debugLogs.push(args)
+}
