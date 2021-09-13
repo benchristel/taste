@@ -1,4 +1,4 @@
-import {pretty, indent, toLines, trimMargin} from "./formatting.js"
+import {pretty, indent, toLines, trimMargin, formatStructure} from "./formatting.js"
 
 export function runTests(testCases) {
   const failures = testCases
@@ -21,7 +21,7 @@ export function successMessage(numSuccesses) {
 }
 
 export function failureMessage(failures) {
-  return failures.join("\n") + "\nTests failed."
+  return failures.join("\n\n") + "\n\nTests failed."
 }
 
 export function reportsFailure(testOutput) {
@@ -41,12 +41,12 @@ export function run(testCase) {
     caught = e
   }
   if (caught || debugLogs.length) {
-    const sections = [title + "\n"]
+    const sections = [title]
     if (debugLogs.length)
       sections.push(indent(2, formatDebugLog(debugLogs)))
     if (caught)
       sections.push(indent(2, formatFailureMessage(caught)))
-    return sections.join("")
+    return sections.join("\n")
   }
   return ""
 }
@@ -62,20 +62,21 @@ export function formatFailureMessage(error) {
       ]
     )
   }
-  return pretty(error) + " thrown\n"
+  return pretty(error) + " thrown"
     + indent(2, simplifyStacktrace(error.stack))
 }
 
 function simplifyStacktrace(stack) {
   if (!stack) return ""
   const lines = trimMargin(stack).split("\n")
-  return lines.slice(0, lines.length - 3)
-    .map(line =>
-      line
-        .replace(/(file:\/\/|http:\/\/[^/]*)/, "")
-        .replace(/^([^@]*)@(.*)$/, "at $1 ($2)")
-    )
-    .join("\n") + "\n"
+  return "\n"
+    + lines.slice(0, lines.length - 3)
+      .map(line =>
+        line
+          .replace(/(file:\/\/|http:\/\/[^/]*)/, "")
+          .replace(/^([^@]*)@(.*)$/, "at $1 ($2)")
+      )
+      .join("\n")
 }
 
 export function formatDebugLog(log) {
@@ -85,9 +86,5 @@ export function formatDebugLog(log) {
 }
 
 export function formatFunctionCall(name, args) {
-  return toLines(
-    name + "(",
-    ...args.map(x => indent(2, pretty(x)) + ","),
-    ")"
-  )
+  return formatStructure(name + "(", args.map(pretty), ",", ")")
 }

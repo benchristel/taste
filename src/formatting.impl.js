@@ -43,32 +43,20 @@ export function pretty(x) {
   }
 
   function prettyFunction(f) {
-    if (partialArgs(f).length) {
-      return `${prettyFunctionName(f)}(${partialArgs(f).map(_pretty).join(", ")})`
-    } else {
-      return prettyFunctionName(f)
-    }
+    const args = partialArgs(f).map(_pretty)
+    const name = prettyFunctionName(f)
+    if (!args.length) return name
+    return formatStructure(name + "(", args, ",", ")")
   }
 
   function prettyArray(a) {
-    const innards = a.map(_pretty)
-    if (a.length < 2) {
-      return "[" + innards + "]"
-    } else {
-      return "[\n"
-        + indent(2, innards.join(",\n"))
-        + "\n]"
-    }
+    return formatStructure("[", a.map(_pretty), ",", "]")
   }
 
   function prettyObject(x) {
-    const entries = Object.entries(x)
-    const innards = entries.map(([k, v]) => `${prettyKey(k)}: ${_pretty(v)}`)
-    if (entries.length < 2) {
-      return "{" + innards + "}"
-    } else {
-      return "{\n" + indent(2, innards.join(",\n")) + "\n}"
-    }
+    const innards = Object.entries(x)
+      .map(([k, v]) => `${prettyKey(k)}: ${_pretty(v)}`)
+    return formatStructure("{", innards, ",", "}")
   }
 }
 
@@ -97,21 +85,21 @@ export function hexEscape(c) {
 
 export function indent(level, s) {
   return s.split("\n")
-    .map(l => !l ? l : prefix(repeat(level, " "))(l))
+    .map(l => !l ? l : prepend(repeat(level, " "))(l))
     .join("\n")
 }
 
 export function toLines(...strs) {
-  return strs.map(suffix("\n")).join("")
+  return strs.map(append("\n")).join("")
 }
 
 export function repeat(n, s) {
   return Array(n + 1).join(s)
 }
 
-const prefix = pref => s => pref + s
+const prepend = prefix => s => prefix + s
 
-const suffix = suf => s => s + suf
+const append = suffix => s => s + suffix
 
 export const removePrefix = curry(
   function removePrefix(prefix, s) {
@@ -131,4 +119,14 @@ export function trimMargin(s) {
   return lns
     .map(removePrefix(initialIndent))
     .join("\n")
+}
+
+export function formatStructure(prefix, innards, delim, suffix) {
+  if (innards.length < 2) {
+    return prefix + innards.join("") + suffix
+  } else {
+    return prefix + "\n"
+      + indent(2, innards.join(delim + "\n"))
+      + "\n" + suffix
+  }
 }

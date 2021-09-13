@@ -1,5 +1,5 @@
 export {runTests, reportsFailure} from "./test-runner.impl.js"
-import {runTests, reportsFailure, successMessage, failureMessage, debugLogs} from "./test-runner.impl.js"
+import {runTests, reportsFailure, successMessage, failureMessage, debugLogs, formatFunctionCall} from "./test-runner.impl.js"
 
 import {test, expect} from "./testing.js"
 import {is, not, equals} from "./predicates.js"
@@ -67,9 +67,7 @@ test("runTests", {
     ]
     const expectedMessage = trimMargin`
       test title
-        debug(
-          "a message",
-        )
+        debug("a message")
 
       Tests failed.
     `
@@ -116,4 +114,23 @@ test("debug logging", {
     expect(debugLogs, equals, [["arg 1", "arg 2"]])
     debugLogs.length = 0
   }
+})
+
+test("formatFunctionCall", {
+  "given no function args"() {
+    expect(formatFunctionCall("myFunc", []), is, "myFunc()")
+  },
+
+  "given one arg"() {
+    expect(formatFunctionCall("myFunc", ["a"]), is, 'myFunc("a")')
+  },
+
+  "given multiple args"() {
+    expect(formatFunctionCall("myFunc", ["a", "b"]), is, trimMargin`
+      myFunc(
+        "a",
+        "b"
+      )
+    `)
+  },
 })

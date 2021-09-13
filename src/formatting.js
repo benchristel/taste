@@ -2,7 +2,7 @@ import {
   indent, pretty, toLines, trimMargin, quote, repeat,
 } from "./formatting.impl.js"
 export {
-  indent, pretty, toLines, trimMargin,
+  indent, pretty, toLines, trimMargin, formatStructure
 } from "./formatting.impl.js"
 
 import {test, expect} from "./testing.js"
@@ -244,8 +244,18 @@ test("pretty", {
   "prints partial arguments passed to a function"() {
     const foo = curry(function foo(a, b, c) {})
     expect(pretty(foo(1)), is, "foo(1)")
-    expect(pretty(foo(1)(2)), is, "foo(1, 2)")
-    expect(pretty(foo(0, 1)), is, "foo(0, 1)")
+    expect(pretty(foo(1)(2)), is, trimMargin`
+      foo(
+        1,
+        2
+      )
+    `)
+    expect(pretty(foo(0, 1)), is, trimMargin`
+      foo(
+        0,
+        1
+      )
+    `)
   },
 
   "pretty-formats function arguments"() {
