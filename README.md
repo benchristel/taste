@@ -28,8 +28,8 @@ test("greet", {
   they're testing—in the same file, even. The tests are
   automatically stripped out of production builds of your
   app.
-- The tests run extremely fast—up to 50x faster than Jest.
-  Taste can run tens of thousands of tests per second.
+- The tests run extremely fast—up to 50x faster than Jest
+  tests. Taste can run tens of thousands of tests per second.
 - Add [Snowpack](https://www.snowpack.dev/) for
   auto-refresh, and you can get near-instantaneous test
   feedback whenever you change a JavaScript file.
