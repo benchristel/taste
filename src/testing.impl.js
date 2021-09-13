@@ -18,7 +18,7 @@ export function createSuite() {
     testCases.push(
       ...Object.entries(definitions)
         .map(([behavior, fn]) =>
-          TestCase(`${subject} ${behavior}`, fn))
+          TestCase(subject, behavior, fn))
     )
   }
 
@@ -37,15 +37,17 @@ export function expect(subject, expectation, ...args) {
     throw new Error("The matcher function `" + prettyFunctionName(pass) + "` returned a function instead of a boolean. You might need to pass another argument to it.")
   }
   if (!pass) {
-    throw {
-      isExpectationFailure: true,
-      subject,
-      expectation,
-      args,
-    }
+    throw new ExpectationFailure([subject, expectation, ...args])
   }
 }
 
-function TestCase(title, fn) {
-  return {title, fn}
+function TestCase(subject, scenario, fn) {
+  return {subject, scenario, fn}
+}
+
+export class ExpectationFailure extends Error {
+  constructor(expectArgs) {
+    super("Expectation failed")
+    this.expectArgs = expectArgs
+  }
 }

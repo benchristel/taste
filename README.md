@@ -87,6 +87,10 @@ test("greet", {
   readable tests in the long run.
 - Taste has no facilities for mocking. It's clearer, and
   easy enough, to roll your own test doubles if you need to.
+- If you minify or uglify your code in development,
+  Taste will break, because it relies on the `name` property
+  of functions to give good failure messages. There might
+  be other problems as well.
 
 ## Syntax
 

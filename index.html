@@ -7,10 +7,13 @@
   <body>
     <code><pre id="testOutput"></pre></code>
     <script type="module">
-import {runTests, reportsFailure} from "./index.js"
+import {runTests, reportsFailure, formatTestResultsAsText} from "./index.js"
 import {getAllTests} from "./src/testing.js"
-window.globalRunTests = runTests
-window.testResults = runTests(getAllTests())
+
+const runAndFormat = tests => formatTestResultsAsText(runTests(tests))
+
+window.globalRunTests = runAndFormat
+window.testResults = runAndFormat(getAllTests())
 testOutput.innerText = testResults
 document.title = reportsFailure(testResults)
   ? "Taste - FAILED"

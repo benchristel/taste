@@ -1,4 +1,4 @@
-export {expect, createSuite, test, getAllTests} from "./testing.impl.js"
+export {expect, createSuite, test, getAllTests, ExpectationFailure} from "./testing.impl.js"
 import {expect, createSuite, test} from "./testing.impl.js"
 
 function is(a, b) {
@@ -76,9 +76,14 @@ test("a suite", {
     theSuite.test("some object", {
       "does something"() {},
     })
+    const firstTest = theSuite.getAllTests()[0]
     expect(
-      theSuite.getAllTests()[0].title,
-      is, "some object does something"
+      firstTest.subject,
+      is, "some object"
+    )
+    expect(
+      firstTest.scenario,
+      is, "does something"
     )
     const aDifferentSuite = createSuite()
     expect(aDifferentSuite.getAllTests(), isEmpty)
