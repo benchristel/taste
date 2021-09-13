@@ -21,44 +21,53 @@ export function successMessage(numSuccesses) {
 }
 
 export function failureMessage(failures) {
-  return failures.join("\n\n") + "\n\nTests failed."
+  return failures.join("\n") + "\nTests failed."
 }
 
 export function reportsFailure(testOutput) {
   return /fail/i.test(testOutput)
 }
 
+export const debugLogs = []
+window.debug = (...args) => debugLogs.push(args)
+
 export function run(testCase) {
   const {title, fn} = testCase
+  let caught
   try {
+    debugLogs.length = 0
     fn()
   } catch (e) {
-    return title + "\n" + indent(2, formatFailureMessage(e))
+    caught = e
+  }
+  if (caught || debugLogs.length) {
+    const sections = [title + "\n"]
+    if (debugLogs.length)
+      sections.push(indent(2, formatDebugLog(debugLogs)))
+    if (caught)
+      sections.push(indent(2, formatFailureMessage(caught)))
+    return sections.join("")
   }
   return ""
 }
 
 export function formatFailureMessage(error) {
   if (error.isExpectationFailure) {
-    return formatExpectationFailure(
-      error.subject,
-      error.expectation,
-      ...error.args,
+    return formatFunctionCall(
+      "expect",
+      [
+        error.subject,
+        error.expectation,
+        ...error.args,
+      ]
     )
   }
   return pretty(error) + " thrown\n"
     + indent(2, simplifyStacktrace(error.stack))
 }
 
-export function formatExpectationFailure(...args) {
-  return toLines(
-    "expect(",
-    ...args.map(a => indent(2, pretty(a) + ",")),
-    ")"
-  )
-}
-
 function simplifyStacktrace(stack) {
+  if (!stack) return ""
   const lines = trimMargin(stack).split("\n")
   return lines.slice(0, lines.length - 3)
     .map(line =>
@@ -66,5 +75,19 @@ function simplifyStacktrace(stack) {
         .replace(/(file:\/\/|http:\/\/[^/]*)/, "")
         .replace(/^([^@]*)@(.*)$/, "at $1 ($2)")
     )
-    .join("\n")
+    .join("\n") + "\n"
+}
+
+export function formatDebugLog(log) {
+  return log
+    .map(args => formatFunctionCall("debug", args))
+    .join("")
+}
+
+export function formatFunctionCall(name, args) {
+  return toLines(
+    name + "(",
+    ...args.map(x => indent(2, pretty(x)) + ","),
+    ")"
+  )
 }

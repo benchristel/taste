@@ -1,5 +1,5 @@
 export {runTests, reportsFailure} from "./test-runner.impl.js"
-import {runTests, reportsFailure, successMessage, failureMessage} from "./test-runner.impl.js"
+import {runTests, reportsFailure, successMessage, failureMessage, debugLogs} from "./test-runner.impl.js"
 
 import {test, expect} from "./testing.js"
 import {is, not, equals} from "./predicates.js"
@@ -17,7 +17,7 @@ test("runTests", {
     expect(runTests(testCases), is("One test ran, and found no issues."))
   },
 
-  "given one failing test"() {
+  "given a test that throws an error"() {
     const testCases = [
       {
         title: "test title",
@@ -36,6 +36,45 @@ test("runTests", {
       Tests failed.
     `
     expect(runTests(testCases), equals, expectedMessage)
+  },
+
+  "given a test that throws an error with no stacktrace"() {
+    const testCases = [
+      {
+        title: "test title",
+        fn() {
+          throw "fake error"
+        },
+      },
+    ]
+    const expectedMessage = trimMargin`
+      test title
+        "fake error" thrown
+
+      Tests failed.
+    `
+    expect(runTests(testCases), equals, expectedMessage)
+  },
+
+  "given a test that logs"() {
+    const testCases = [
+      {
+        title: "test title",
+        fn() {
+          debug("a message")
+        },
+      },
+    ]
+    const expectedMessage = trimMargin`
+      test title
+        debug(
+          "a message",
+        )
+
+      Tests failed.
+    `
+    expect(runTests(testCases), equals, expectedMessage)
+    debugLogs.length = 0
   },
 })
 
@@ -68,5 +107,13 @@ test("reportsFailure", {
     expect("fail", reportsFailure)
     expect("something failed", reportsFailure)
     expect("f", not(reportsFailure))
+  }
+})
+
+test("debug logging", {
+  "logs all args passed"() {
+    debug("arg 1", "arg 2")
+    expect(debugLogs, equals, [["arg 1", "arg 2"]])
+    debugLogs.length = 0
   }
 })

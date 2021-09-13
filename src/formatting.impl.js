@@ -97,12 +97,12 @@ export function hexEscape(c) {
 
 export function indent(level, s) {
   return s.split("\n")
-    .map(prefix(repeat(level, " ")))
+    .map(l => !l ? l : prefix(repeat(level, " "))(l))
     .join("\n")
 }
 
 export function toLines(...strs) {
-  return strs.join("\n")
+  return strs.map(suffix("\n")).join("")
 }
 
 export function repeat(n, s) {
@@ -110,6 +110,8 @@ export function repeat(n, s) {
 }
 
 const prefix = pref => s => pref + s
+
+const suffix = suf => s => s + suf
 
 export const removePrefix = curry(
   function removePrefix(prefix, s) {

@@ -260,11 +260,11 @@ test("toLines", {
   },
 
   "returns a single line"() {
-    expect(toLines("foo"), is, "foo")
+    expect(toLines("foo"), is, "foo\n")
   },
 
   "returns multiple lines"() {
-    expect(toLines("foo", "bar"), is, "foo\nbar")
+    expect(toLines("foo", "bar"), is, "foo\nbar\n")
   },
 })
 
@@ -278,9 +278,13 @@ test("indent", {
     expect(indent(1, "foo\nbar"), is, " foo\n bar")
   },
 
-  "indents an empty string"() {
-    expect(indent(2, ""), is, "  ")
+  "does not indent an empty string"() {
+    expect(indent(2, ""), is, "")
   },
+
+  "does not indent a blank line"() {
+    expect(indent(2, "foo\n"), is, "  foo\n")
+  }
 })
 
 test("trimMargin", {
