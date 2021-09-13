@@ -14,8 +14,12 @@ An opinionated, elegant test library for web applications.
 - Add [Snowpack](https://www.snowpack.dev/) for
   auto-refresh, and you get near-instantaneous test feedback
   whenever you change a JavaScript file.
-- To run tests in CI, you can use
-  [Puppeteer](https://developers.google.com/web/tools/puppeteer/).
+- To run tests in CI or as a pre-push hook, you can set up
+  [Puppeteer](https://developers.google.com/web/tools/puppeteer/),
+  to run the tests in a headless Chrome browser. Astonishingly,
+  this is _still slightly faster than Jest_ (1.2s vs. 1.3s
+  startup overhead on my machine).
+  
 
 ## Caveats and Strong Opinions
 
