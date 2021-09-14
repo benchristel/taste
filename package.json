@@ -1,5 +1,5 @@
 {
-  "name": "taste",
+  "name": "@benchristel/taste",
   "version": "0.0.0",
   "description": "An elegant set of tools for writing well-tested web applications",
   "main": "index.js",
