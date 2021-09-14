@@ -10,11 +10,7 @@
 import {runTests, reportsFailure, formatTestResultsAsText} from "./index.js"
 import {getAllTests} from "./src/testing.js"
 
-const runAndFormat = tests => formatTestResultsAsText(runTests(tests))
-
-window.globalRunTests = runAndFormat
-window.testResults = runAndFormat(getAllTests())
-testOutput.innerText = testResults
+const testResults = testOutput.innerText = formatTestResultsAsText(runTests(getAllTests()))
 document.title = reportsFailure(testResults)
   ? "Taste - FAILED"
   : "Taste - " + testResults
