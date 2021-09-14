@@ -210,5 +210,11 @@ test("not", {
 
   "inverts twice"() {
     expect(1, not(not(is(1))))
+  },
+
+  "inverts a binary predicate"() {
+    const isNot = not(is)
+    expect(1, isNot, 2)
+    expect(1, not(isNot), 1)
   }
 })
