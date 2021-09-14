@@ -119,22 +119,65 @@ test("repeat", {
 })
 ```
 
-## Setup
+## Serving Suggestions
+
+You can run all your tests and display the results by doing
+something like this:
+
+```js
+import {getAllTests, runTests, formatTestResultsAsText} from "taste"
+
+document.getElementById("testResults").innerText
+  = formatTestResultsAsText(runTests(getAllTests()))
+```
+
+Of course, you're probably using a UI library that
+discourages directly setting `innerText` on an element.
+Here's how you might render Taste test results in a React
+component:
+
+```js
+import * as React from "react"
+import {getAllTests, runTests, formatTestResultsAsText} from "taste"
+
+export function TestResults() {
+  return <code>
+    <pre>
+      {formatTestResultsAsText(runTests(getAllTests()))}
+    </pre>
+  </code>
+}
+```
+
+Of course, there's no reason you have to render your test
+results as plain text. `runTests` returns a simple
+JavaScript object suitable for rendering in a variety of
+forms. Rendering the test output as a stylish tree of React
+elements is left as an exercise for the reader.
+
+Depending on how your app is structured, you may want to
+render the test results in a separate HTML file from your
+main app, or on a separate route/page within your app. It's
+up to you!
 
 I recommend bundling your code for production with
 `@snowpack/plugin-webpack`. This will automatically remove
 any `taste` tests from your production build.
 
-Do not put any javascript directly in your `index.html`;
-as of this writing, the webpack plugin will not build it
-correctly and it will not be run in the bundled version of
-your site. Instead, do something like this:
+If you use snowpack+webpack, do not put any JavaScript
+directly in your `index.html`; as of this writing, the
+webpack plugin will not build it correctly and it will not
+be run in the bundled version of your site. Instead, do
+something like this to include your root `index.js` module:
 
 ```html
 <script type="module" src="./index.js"></script>
 ```
 
 ## Development
+
+This section contains instructions for working on Taste
+itself.
 
 Fast test runner:
 
