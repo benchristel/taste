@@ -1,20 +1,21 @@
-# This Software Costs Ten Billion Dollars
+The MIT License (MIT)
 
-Copyright 2021, Ben Christel.
+Copyright © 2021 Ben Christel
 
-You may use this software, but must pay the author ten
-billion dollars ($10,000,000,000 USD) to do so. To arrange
-payment, please contact `benchristel@gmail.com`. I'll
-probably be willing to waive the fee if you're planning to
-use Taste for something ethical.
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated
+documentation files (the “Software”), to deal in the
+Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute,
+sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
 
-If I find out you're using this software and haven't paid
-for it, I'll sue the crap out of you, to the tune of ten
-billion dollars per download.
+The above copyright notice and this permission notice shall
+be included in all copies or substantial portions of the
+Software.
 
-You've been warned.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY
 KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
 WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
 PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
