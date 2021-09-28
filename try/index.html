@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Try Taste</title>
+    <meta charset="utf-8">
+    <script src="/try/codemirror.js"></script>
+    <script src="/try/javascript_mode.js"></script>
+    <link rel="stylesheet" href="/try/codemirror.css">
+    <style type="text/css">
+
+* {
+  font-family: Menlo, Monaco, monospace;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.CodeMirror {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 50%;
+
+  width: 50%;
+  height: initial;
+  border: 3px inset silver;
+}
+
+#output {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  right: 0;
+  padding: 5px;
+  white-space: pre;
+}
+
+textarea {
+  font-size: 18px;
+}
+
+    </style>
+  </head>
+  <body>
+    <textarea id="editor">// This is a hacky demo of the Taste testing library.
+// For more information, see https://npmjs.org/package/@benchristel/taste
+
+test("reverse", {
+  "does nothing to the empty string"() {
+    expect(reverse(""), is, "")
+  },
+
+  "does nothing to a one-character string"() {
+    expect(reverse("a"), is, "a")
+  },
+
+  "flips two characters"() {
+    expect(reverse("ab"), is, "ba")
+  },
+
+  "reverses 3 characters"() {
+    expect(reverse("bad"), is, "dab")
+  },
+
+  "reverses 4 characters"() {
+    expect(reverse("help"), is, "pleh")
+  },
+})
+
+function reverse(s) {
+  if (!s.length) return ""
+  const [head, ...tail] = s
+  return reverse(tail) + head
+}
+    </textarea>
+    <div id="output"></div>
+    <p id="status"></p>
+    <script type="module" src="/try/index.js"></script>
+  </body>
+</html>
