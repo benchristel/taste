@@ -2,6 +2,8 @@
 
 A **fast**, 1kb, opinionated test library for frontend JS.
 
+[Build Status](https://benchristel.github.io/taste).
+
 ```js
 import {test, expect, is} from "taste"
 
@@ -19,6 +21,10 @@ test("greet", {
   },
 })
 ```
+
+## Try it online!
+
+https://benchristel.github.io/taste/try/
 
 ## What does it do?
 
