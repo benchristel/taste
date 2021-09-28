@@ -28,6 +28,9 @@ Taste's own tests are written using Taste. [You can run the tests in your browse
 
 https://benchristel.github.io/taste/try/
 
+There is also a set of [downloadable koans/tutorials](https://github.com/benchristel/taste-koans) that walk you through
+Taste's features from basic to advanced, and serve as a reference for how to integrate Taste into a project.
+
 ## What does it do?
 
 - Tests run in the browser. You can easily integrate the
