@@ -31,6 +31,26 @@ https://benchristel.github.io/taste/try/
 There is also a set of [downloadable koans/tutorials](https://github.com/benchristel/taste-koans) that walk you through
 Taste's features from basic to advanced, and serve as a reference for how to integrate Taste into a project.
 
+## Prerequisites
+
+Taste might be a good fit for your project if...
+
+- Your code uses ECMAScript modules (ESM)—either
+  browser-native with something like Snowpack, or bundled
+  via something like webpack.
+- You like to live a bit dangerously, and maintain your own
+  motorcycle.
+
+## Installation
+
+```
+yarn add @benchristel/taste
+```
+
+Some assembly required; batteries not included. See below
+for setup instructions, or refer to an
+[example project](https://github.com/benchristel/taste-koans).
+
 ## What does it do?
 
 - Tests run in the browser. You can easily integrate the
