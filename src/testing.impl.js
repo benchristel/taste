@@ -5,7 +5,7 @@ const suite = createSuite()
 export const {getAllTests} = suite
 
 export function test(...args) {
-  if (typeof process === "undefined" || process.env.NODE_ENV !== "production")
+  if (process.env.NODE_ENV !== "production")
     suite.test(...args)
 }
 

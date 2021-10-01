@@ -1,6 +1,6 @@
 # taste
 
-A **fast**, 1kb, opinionated test library for frontend JS.
+A **fast**, simple test library for frontend JS.
 
 ```js
 import {test, expect, is} from "taste"
