@@ -1,6 +1,6 @@
 {
   "name": "@benchristel/taste",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An elegant set of tools for writing well-tested web applications",
   "main": "index.js",
   "author": "Ben Christel <bchristel@pivotal.io>",
