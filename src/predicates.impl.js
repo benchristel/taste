@@ -1,10 +1,10 @@
 import {curry, curriedFunction, partialArgs, originalFunction} from "./curry.js"
 
-export const which = curry(function which(predicate, x) {
+export const which = curry(function(predicate, x) {
   return predicate(x)
-})
+}, "which")
 
-export const equals = curry(function equals(a, b) {
+export const equals = curry(function(a, b) {
   if (isCustomMatcher(a)) {
     return a(b)
   }
@@ -29,19 +29,19 @@ export const equals = curry(function equals(a, b) {
       && a.__proto__.constructor === b.__proto__.constructor
   }
   return a === b
-})
+}, "equals")
 
-export const is = curry(function is(a, b) {
+export const is = curry(function(a, b) {
   return a === b
-})
+}, "is")
 
-export const not = curry(function not(predicate, subject, ...args) {
+export const not = curry(function(predicate, subject, ...args) {
   return !predicate(subject, ...args)
-})
+}, "not")
 
-export function isBlank(s) {
+export const isBlank = curry(function(s) {
   return /^\s*$/.test(s)
-}
+}, "isBlank")
 
 function isCustomMatcher(f) {
   return f instanceof Function

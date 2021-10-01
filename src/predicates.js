@@ -1,7 +1,7 @@
 export {is, not, equals, which, isBlank} from "./predicates.impl.js"
-import {is, not, equals, which} from "./predicates.impl.js"
+import {is, not, equals, which, isBlank} from "./predicates.impl.js"
 
-import {curry} from "./curry.js"
+import {curry, functionName} from "./curry.js"
 import {test, expect} from "./testing.js"
 
 const eq = (a, b) => a === b
@@ -180,6 +180,10 @@ test("equals", {
       )),
     )
   },
+
+  "is named"() {
+    expect(functionName(equals), is, "equals")
+  },
 })
 
 test("is", {
@@ -200,6 +204,10 @@ test("is", {
   "compares by pointer equality"() {
     expect(is({}, {}), eq, false)
   },
+
+  "is named"() {
+    expect(functionName(is), is, "is")
+  },
 })
 
 test("not", {
@@ -216,5 +224,37 @@ test("not", {
     const isNot = not(is)
     expect(1, isNot, 2)
     expect(1, not(isNot), 1)
-  }
+  },
+
+  "is named"() {
+    expect(functionName(not), is, "not")
+  },
+})
+
+test("which", {
+  "is named"() {
+    expect(functionName(which), is, "which")
+  },
+})
+
+test("isBlank", {
+  "is true for the empty string"() {
+    expect(isBlank(""), is, true)
+  },
+
+  "is false for a string with visible characters"() {
+    expect(isBlank("a"), is, false)
+  },
+
+  "is true for whitespace"() {
+    expect(isBlank(" \t\n\r"), is, true)
+  },
+
+  "is false for a string with both visible characters and spaces"() {
+    expect(isBlank(" not blank "), is, false)
+  },
+
+  "is named"() {
+    expect(functionName(isBlank), is, "isBlank")
+  },
 })
