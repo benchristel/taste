@@ -38,8 +38,8 @@ Taste might be a good fit for your project if...
 - Your code uses ECMAScript modules (ESM)—either
   browser-native with something like Snowpack, or bundled
   via something like webpack.
-- You like to live a bit dangerously, and maintain your own
-  motorcycle.
+- You have an abundance of gumption and are willing to get
+  your hands a bit dirty.
 
 ## Installation
 
@@ -80,7 +80,8 @@ for setup instructions, or refer to an
   matter what convention you choose.
 - You can easily insert custom matchers into deep-equality
   assertions, to compare subtrees however you choose.
-  This makes Taste a good choice for property-based testing, runtime typechecking, or testing non-deterministic code.
+  This makes Taste a good choice for property-based testing,
+  runtime typechecking, or testing non-deterministic code.
   For example:
 
   ```js
@@ -104,7 +105,7 @@ for setup instructions, or refer to an
   })
   ```
 
-## Caveats and Strong Opinions
+## What doesn't it do?
 
 - Only synchronous tests are supported: no
   `Promise`s, async tests, or timers. This isn't as bad as
@@ -122,33 +123,6 @@ for setup instructions, or refer to an
   Taste will break, because it relies on the `name` property
   of functions to give good failure messages. There might
   be other problems as well.
-
-## Syntax
-
-Here's an example of a Taste test for a `repeat` function.
-
-```js
-import {test, expect, is} from "taste"
-import {repeat} from "./repeat.impl.js"
-
-test("repeat", {
-  "repeats a string zero times"() {
-    expect(repeat(0, "ha"), is, "")
-  },
-
-  "repeats a string once"() {
-    expect(repeat(1, "eh"), is, "eh")
-  },
-
-  "repeats a string several times"() {
-    expect(repeat(4, "na"), is, "nananana")
-  },
-
-  "repeats the empty string"() {
-    expect(repeat(10, ""), is, "")
-  },
-})
-```
 
 ## Serving Suggestions
 
@@ -204,6 +178,37 @@ something like this to include your root `index.js` module:
 ```html
 <script type="module" src="./index.js"></script>
 ```
+
+### Vite + React
+
+Taste works great with Vite! I recommend it. You will need
+to make a couple tweaks to get it to work well, though.
+
+To ensure your tests run automatically and you do not see
+duplicate test results when components get hot-reloaded, I
+recommend turning HMR **off** for files that contain tests.
+You can do that like this:
+
+```
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react({include: ["**/*.impl.js", "**/*.impl.jsx"]})],
+  build: {
+    target: "chrome91",
+  },
+})
+```
+
+Using this config, you'd place all of your non-test code
+in `*.impl.js` or `*.impl.jsx` files, and only those files
+would get hot-reloaded. An alternative would be to use
+something like `exclude: ["**/*.test.js"]`.
+
+You will also need to set the build target to something that
+supports bigints, e.g. `chrome91` above.
 
 ## Development
 
