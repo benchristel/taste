@@ -1,6 +1,6 @@
 # taste
 
-A **fast**, simple test library for frontend JS.
+A **fast**, modular test library for frontend JS.
 
 ```js
 import {test, expect, is} from "taste"
@@ -35,11 +35,11 @@ Taste's features from basic to advanced, and serve as a reference for how to int
 
 Taste might be a good fit for your project if...
 
-- Your code uses ECMAScript modules (ESM)—either
-  browser-native with something like Snowpack, or bundled
-  via something like webpack.
+- You use browser-native ECMAScript modules (ESM) in
+  development, via e.g. Snowpack or Vite.
 - You have an abundance of gumption and are willing to get
-  your hands a bit dirty.
+  your hands a bit dirty. Taste is beta code, designed for
+  people who like tools they can thoroughly understand.
 
 ## Installation
 
@@ -140,15 +140,63 @@ for setup instructions, or refer to an
   can de-duplicate repeated setup by simply extracting
   functions and calling them, as you would for duplicated
   production code. In my experience, this makes for more
-  readable tests in the long run.
+  readable tests in the long run. However, Taste is
+  flexible enough that you could build your own Jest-like
+  test-definition syntax on top of it, if you wanted to.
 - Taste has no facilities for mocking. It's clearer, and
   easy enough, to roll your own test doubles if you need to.
-- If you minify or uglify your code in development,
-  Taste will break, because it relies on the `name` property
-  of functions to give good failure messages. There might
-  be other problems as well.
+  Or use another mocking library; [there are plenty to
+  choose from](https://www.npmjs.com/search?q=mock).
 
 ## Serving Suggestions
+
+Taste provides basic facilities for writing and running
+tests, but is unopinionated about how tests are imported and
+their results displayed. This section contains advice on
+integrating Taste into your project.
+
+### Importing tests
+
+Taste differs from other test frameworks in that there is
+no automatic "test discovery". While Jest lets you specify
+a filename pattern like `*.test.js` to load for testing,
+Taste uses plain old `import` to load test files into the
+browser. If your test files are not imported, the tests
+won't run!
+
+There are several patterns you can follow to ensure test
+files get loaded:
+
+- Put your tests in the same file as the code they're
+  testing! TDDers are fond of saying that tests serve as
+  runnable documentation. So just put your tests next to
+  your production code, and then you can delete all those
+  pesky doc comments.
+- Put your tests in separate files, and import them directly
+  from your main JavaScript file (`index.js` or `App.js` or
+  whatever). The downside of this approach is that you have
+  to remember to update `index.js` whenever you add a test
+  file. You might also get merge conflicts if many devs add
+  test imports to `index.js` concurrently.
+- Do what Taste's own codebase does: put the tests and
+  documentation for module `foo` in `foo.js`, and the
+  production code in `foo.impl.js`, which `foo.js` imports
+  and re-exports. This may seem strange at first, but it has
+  a few distinct advantages:
+  - It cleanly separates interface from implementation:
+    `foo.js` contains the tests, documentation, and list of
+    exports for the module `foo`; someone who wants to use
+    `foo` can just read that file and not have to scroll
+    through the implementation.
+  - `foo.impl.js` can export code that `foo.js` doesn't
+    re-export; this allows `foo.js` to directly test that
+    code while clearly communicating that it isn't used
+    outside the `foo` module.
+  - If you maintain the convention that other modules must
+    import `foo.js` and not `foo.impl.js`, you never have to
+    worry that your tests won't be loaded.
+
+### Displaying test output
 
 You can run all your tests and display the results by doing
 something like this:
@@ -194,16 +242,32 @@ export function TestResults() {
 }
 ```
 
-Of course, there's no reason you have to render your test
-results as plain text. `runTests` returns a simple
-JavaScript object suitable for rendering in a variety of
-forms. Rendering the test output as a stylish tree of React
-elements is left as an exercise for the reader.
+Taste's built-in formatter renders test results as plain
+text, but you needn't be limited to this. `await runTests`
+returns a simple JavaScript object suitable for rendering
+in a variety of forms. Rendering the test output as a
+stylish tree of React elements is left as an exercise for
+the reader.
 
 Depending on how your app is structured, you may want to
 render the test results in a separate HTML file from your
 main app, or on a separate route/page within your app. It's
 up to you!
+
+### Removing tests from production builds
+
+If you're using Webpack, Rollup, or most other module
+bundlers, you shouldn't have to do anything special to
+remove Taste tests from the production build of your app.
+If you find that tests are showing up in bundled code,
+ensure that `process.env.NODE_ENV === "production"` and your
+optimizer is configured for tree-shaking / dead code
+elimination.
+
+### Snowpack
+
+Taste works with [Snowpack](https://www.snowpack.dev/) with
+no special configuration.
 
 I recommend bundling your code for production with
 `@snowpack/plugin-webpack`. This will automatically remove
@@ -224,12 +288,27 @@ something like this to include your root `index.js` module:
 Taste works great with Vite! I recommend it. You will need
 to make a couple tweaks to get it to work well, though.
 
+First, set your build target to something that supports
+bigints, e.g. `chrome91`.
+
+```js
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  build: {
+    target: "chrome91",
+  },
+})
+```
+
 To ensure your tests run automatically and you do not see
 duplicate test results when components get hot-reloaded, I
-recommend turning HMR **off** for files that contain tests.
-You can do that like this:
+recommend turning hot module replacement (HMR) **off** for
+files that contain tests. You can do that like this:
 
-```
+```js
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
@@ -245,10 +324,8 @@ export default defineConfig({
 Using this config, you'd place all of your non-test code
 in `*.impl.js` or `*.impl.jsx` files, and only those files
 would get hot-reloaded. An alternative would be to use
-something like `exclude: ["**/*.test.js"]`.
-
-You will also need to set the build target to something that
-supports bigints, e.g. `chrome91` above.
+something like `exclude: ["**/*.test.js"]` if you use that
+naming convention.
 
 ## Development
 
