@@ -1,11 +1,13 @@
 {
   "name": "@benchristel/taste",
-  "version": "0.0.3",
-  "description": "An elegant set of tools for writing well-tested web applications",
-  "main": "index.js",
+  "version": "0.1.0",
+  "description": "A fast, modular test library for frontend JS",
+  "keywords": ["auto","ava","bdd","browser","chai","es6","fast","framework","hmr","instant","jasmine","jest","library","mocha","modular","module","modules","refresh","reload","simple","snowpack","tap","tape","taste","tdd","test","testing","tests","vite","xunit"],
   "author": "Ben Christel <bchristel@pivotal.io>",
+  "repository": "https://github.com/benchristel/taste",
   "license": "MIT",
   "private": false,
+  "main": "index.js",
   "scripts": {
     "test": "./test"
   },
