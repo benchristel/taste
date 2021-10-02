@@ -109,11 +109,20 @@ export function simplifyStacktrace(stack) {
   if (!stack) return ""
   const lines = trimMargin(stack).split("\n")
   return "\n"
-    + lines.slice(0, lines.findIndex(l => l.includes("errorFrom")))
+    + lines.slice(0, indexOfFirstIrrelevantStackFrame(lines))
       .map(line =>
         line
           .replace(/(file:\/\/|http:\/\/[^/]*)/, "")
           .replace(/^([^@]*)@(.*)$/, "at $1 ($2)")
       )
       .join("\n")
+}
+
+export function indexOfFirstIrrelevantStackFrame(lines) {
+  const i = lines.findIndex(l => l.includes("errorFrom"))
+  // If the error is thrown from async code, errorFrom
+  // won't be on the stack. In that case, consider all stack
+  // frames relevant.
+  if (i === -1) return lines.length
+  else return i
 }

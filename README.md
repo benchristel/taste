@@ -105,12 +105,36 @@ for setup instructions, or refer to an
   })
   ```
 
+- Tests can use `async/await`: e.g.
+
+  ```js
+  import {test, expect, is} from "taste"
+
+  async function promiseOf(value) {
+    return Promise.resolve(value)
+  }
+
+  test("promiseOf", {
+    async "resolves to the value"() {
+      expect(await promiseOf(123), is, 123)
+    },
+  })
+  ```
+
 ## What doesn't it do?
 
-- Only synchronous tests are supported: no
-  `Promise`s, async tests, or timers. This isn't as bad as
-  it sounds. Refactor your code so the interesting,
-  test-worthy stuff is synchronous, and you'll be happier.
+- `async` tests are not run in parallel. Thus, if you
+  `await` a 100ms timeout in a test, your suite will take
+  100ms longer to run. It's up to you to design your code so
+  promises can resolve quickly in tests. The ideal is to
+  resolve all promises in [microtasks](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide/In_depth),
+  which will allow your async tests to run as fast as
+  synchronous code.
+- There is currently no timeout for `async` tests. If you
+  accidentally `await` a promise that never resolves, your
+  tests will hang with no indication of what's wrong. Reduce
+  the pain of this eventuality by running your tests on
+  every code change so you can quickly revert mistakes.
 - There are no equivalents of Jest's `beforeEach` etc.,
   nor are there nested `describe` or `context` blocks. You
   can de-duplicate repeated setup by simply extracting
@@ -130,10 +154,15 @@ You can run all your tests and display the results by doing
 something like this:
 
 ```js
+// index.js
+import "./App.js"
 import {getAllTests, runTests, formatTestResultsAsText} from "taste"
 
+// getAllTests() must be called *after* all test files have
+// been imported, which is supposed to happen via the
+// `import "./App.js"` above
 document.getElementById("testResults").innerText
-  = formatTestResultsAsText(runTests(getAllTests()))
+  = formatTestResultsAsText(await runTests(getAllTests()))
 ```
 
 Of course, you're probably using a UI library that
@@ -142,13 +171,24 @@ Here's how you might render Taste test results in a React
 component:
 
 ```js
+// index.js
+import "./App.js"
+
+// getAllTests() must be called *after* all test files have
+// been imported, which is supposed to happen via the
+// `import "./App.js"` above
+window.testResults = await runTests(getAllTests())
+```
+
+```js
+// TestResults.jsx
 import * as React from "react"
 import {getAllTests, runTests, formatTestResultsAsText} from "taste"
 
 export function TestResults() {
   return <code>
     <pre>
-      {formatTestResultsAsText(runTests(getAllTests()))}
+      {formatTestResultsAsText(window.testResults)}
     </pre>
   </code>
 }

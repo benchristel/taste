@@ -17,15 +17,15 @@ const isExpectationFailure = curry(
   })
 
 test("runTests", {
-  "given no tests"() {
-    expect(runTests([]), equals, {
+  async "given no tests"() {
+    expect(await runTests([]), equals, {
       results: [],
     })
   },
 
-  "given a passing test"() {
+  async "given a passing test"() {
     const dummyTestFn = () => {}
-    const {results} = runTests([
+    const {results} = await runTests([
       {
         subject: "a thing",
         scenario: "does something",
@@ -45,8 +45,8 @@ test("runTests", {
     ])
   },
 
-  "given a failing test"() {
-    const {results} = runTests([
+  async "given a failing test"() {
+    const {results} = await runTests([
       {
         subject: "a thing",
         scenario: "does something",
@@ -62,8 +62,8 @@ test("runTests", {
     ])
   },
 
-  "given a test that debugs"() {
-    const {results} = runTests([
+  async "given a test that debugs"() {
+    const {results} = await runTests([
       {
         subject: "a thing",
         scenario: "does something",
@@ -90,6 +90,37 @@ test("runTests", {
       }
     ])
     debugLogs.length = 0
+  },
+
+  async "given an async test that debugs"() {
+    const {results} = await runTests([
+      {
+        subject: "a thing",
+        scenario: "does something",
+        async fn() {
+          debug("before await")
+          await Promise.resolve()
+          debug("after await")
+        },
+      },
+    ])
+
+    expect(results, equals, [
+      {
+        test: which(isDefined),
+        error: undefined,
+        instrumentLog: [
+          {
+            type: "debug",
+            args: ["before await"]
+          },
+          {
+            type: "debug",
+            args: ["after await"]
+          },
+        ],
+      }
+    ])
   }
 })
 

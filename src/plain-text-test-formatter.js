@@ -211,7 +211,7 @@ test("formatTestResultsAsText", {
     `)
   },
 
-  "formats an error with a stacktrace"() {
+  "formats an error with a Firefox stacktrace"() {
     const error = new Error("test error")
     // This is a real stacktrace copy-pasted from Firefox
     error.stack = trimMargin`
@@ -223,12 +223,7 @@ test("formatTestResultsAsText", {
       runAndFormat@http://localhost:8080/:14:49
       @http://localhost:8080/:17:22
     `
-    const testResults = [
-      {
-        ...basePassingTest,
-        error,
-      },
-    ]
+    const testResults = [{...basePassingTest, error}]
     expectOutput(testResults, trimMargin`
       a thing does something
         Error("test error") thrown
@@ -239,13 +234,66 @@ test("formatTestResultsAsText", {
     `)
   },
 
+  "formats an error with a Chrome stacktrace"() {
+    const error = new Error("test error")
+    // This is real stacktrace copy-pasted from Chrome.
+    error.stack = trimMargin`
+      Error: test error
+          at repeats a string zero times (formatting.js:14)
+          at errorFrom (test-runner.impl.js:42)
+          at runTests (test-runner.impl.js:6)
+          at async (index):17
+    `
+    const testResults = [{...basePassingTest, error}]
+    expectOutput(testResults, trimMargin`
+      a thing does something
+        Error("test error") thrown
+          Error: test error
+              at repeats a string zero times (formatting.js:14)
+
+      Tests failed.
+    `)
+  },
+
+  "formats an error thrown from async code on Firefox"() {
+    const error = new Error("test error")
+    // This is a real stacktrace copy-pasted from Firefox
+    error.stack = trimMargin`
+      repeats a string zero times@http://localhost:8080/src/formatting.js:15:11
+      async*errorFrom@http://localhost:8080/src/test-runner.impl.js:42:20
+      runTests@http://localhost:8080/src/test-runner.impl.js:6:25
+      async*@http://localhost:8080/:17:23
+    `
+    const testResults = [{...basePassingTest, error}]
+    expectOutput(testResults, trimMargin`
+      a thing does something
+        Error("test error") thrown
+          at repeats a string zero times (/src/formatting.js:15:11)
+
+      Tests failed.
+    `)
+  },
+
+  "formats an error thrown from async code on Chrome"() {
+    const error = new Error("test error")
+    // This is real stacktrace copy-pasted from Chrome.
+    error.stack = trimMargin`
+      Error: test error
+          at repeats a string zero times (formatting.js:15)
+    `
+    const testResults = [{...basePassingTest, error}]
+    expectOutput(testResults, trimMargin`
+      a thing does something
+        Error("test error") thrown
+          Error: test error
+              at repeats a string zero times (formatting.js:15)
+
+      Tests failed.
+    `)
+  },
+
   "formats a throwable without a stacktrace"() {
-    const testResults = [
-      {
-        ...basePassingTest,
-        error: "test error"
-      },
-    ]
+    const testResults = [{...basePassingTest, error: "test error"}]
     expectOutput(testResults, trimMargin`
       a thing does something
         "test error" thrown

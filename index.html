@@ -13,10 +13,18 @@
 import {runTests, reportsFailure, formatTestResultsAsText} from "./index.js"
 import {getAllTests} from "./src/testing.js"
 
-const testResults = testOutput.innerText = formatTestResultsAsText(runTests(getAllTests()))
-document.title = reportsFailure(testResults)
-  ? "Taste - FAILED"
-  : "Taste - " + testResults
+const results = await runTests(getAllTests())
+const output = formatTestResultsAsText(results)
+testOutput.innerText = output
+document.title = "Taste - " + summaryOf(output)
+
+function summaryOf(output) {
+  if (reportsFailure(output)) {
+    return "FAILED"
+  } else {
+    return output
+  }
+}
     </script>
   </body>
 </html>

@@ -4,18 +4,18 @@ const textarea = document.getElementById('editor')
 const editor = window.CodeMirror.fromTextArea(textarea, {mode: 'javascript'})
 const output = document.getElementById("output")
 
-function getTestResults(code) {
+async function getTestResults(code) {
   const suite = createSuite()
   window.test = suite.test
   window.expect = expect
   window.is = is
   eval("(function() {" + code + "})()")
-  return runTests(suite.getAllTests())
+  return await runTests(suite.getAllTests())
 }
 
-function runTestsAndDisplayOutput() {
+async function runTestsAndDisplayOutput() {
   try {
-    const results = getTestResults(editor.getValue())
+    const results = await getTestResults(editor.getValue())
     output.innerText = formatTestResultsAsText(results)
     console.log("results")
   } catch (e) {
