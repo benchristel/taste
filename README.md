@@ -1,9 +1,9 @@
-# taste
+# @benchristel/taste
 
 A **fast**, modular test library for frontend JS.
 
 ```js
-import {test, expect, is} from "taste"
+import {test, expect, is} from "@benchristel/taste"
 
 function greet(whomst) {
   return `Hello, ${whomst || "you person, you"}!`
@@ -85,7 +85,7 @@ for setup instructions, or refer to an
   For example:
 
   ```js
-  import {test, expect, equals, curry, which} from "taste"
+  import {test, expect, equals, curry, which} from "@benchristel/taste"
 
   const isBetween = curry(function isBetween(min, max, n) {
     return n >= min && n <= max
@@ -108,7 +108,7 @@ for setup instructions, or refer to an
 - Tests can use `async/await`: e.g.
 
   ```js
-  import {test, expect, is} from "taste"
+  import {test, expect, is} from "@benchristel/taste"
 
   async function promiseOf(value) {
     return Promise.resolve(value)
@@ -204,7 +204,7 @@ something like this:
 ```js
 // index.js
 import "./App.js"
-import {getAllTests, runTests, formatTestResultsAsText} from "taste"
+import {getAllTests, runTests, formatTestResultsAsText} from "@benchristel/taste"
 
 // getAllTests() must be called *after* all test files have
 // been imported, which is supposed to happen via the
@@ -231,7 +231,7 @@ window.testResults = await runTests(getAllTests())
 ```js
 // TestResults.jsx
 import * as React from "react"
-import {getAllTests, runTests, formatTestResultsAsText} from "taste"
+import {getAllTests, runTests, formatTestResultsAsText} from "@benchristel/taste"
 
 export function TestResults() {
   return <code>
