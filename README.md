@@ -124,17 +124,19 @@ for setup instructions, or refer to an
 ## What doesn't it do?
 
 - `async` tests are not run in parallel. Thus, if you
-  `await` a 100ms timeout in a test, your suite will take
+  `await` a 100ms timer in a test, your suite will take
   100ms longer to run. It's up to you to design your code so
   promises can resolve quickly in tests. The ideal is to
   resolve all promises in [microtasks](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide/In_depth),
   which will allow your async tests to run as fast as
   synchronous code.
-- There is currently no timeout for `async` tests. If you
+- By default, there is no timeout for `async` tests. If you
   accidentally `await` a promise that never resolves, your
   tests will hang with no indication of what's wrong. Reduce
   the pain of this eventuality by running your tests on
-  every code change so you can quickly revert mistakes.
+  every code change so you can quickly revert mistakes. You
+  can add timeouts to your test suite with
+  [@benchristel/taste-timeout](https://www.npmjs.com/package/@benchristel/taste-timeout).
 - There are no equivalents of Jest's `beforeEach` etc.,
   nor are there nested `describe` or `context` blocks. You
   can de-duplicate repeated setup by simply extracting
