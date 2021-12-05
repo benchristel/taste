@@ -151,6 +151,15 @@ test("equals", {
     expect(new Date("1999-12-21"), equals(new Date("1999-12-21")))
   },
 
+  "given different sets"() {
+    expect(new Set([1]), not(equals(new Set())))
+    expect(new Set([1, 2]), not(equals(new Set([1, 3]))))
+  },
+
+  "given equal sets"() {
+    expect(new Set([1, 2]), equals(new Set([2, 1])))
+  },
+
   "given a custom matcher"() {
     const contains = curry(function contains(needle, haystack) {
       return haystack.includes(needle)

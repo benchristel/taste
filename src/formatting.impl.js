@@ -27,6 +27,8 @@ export function pretty(x) {
       return String(x)
     if (x instanceof Error)
       return `${prettyConstructor(x)}(${quote(x.message)})`
+    if (x instanceof Set)
+      return preventInfiniteLoop(x, prettySet)
     if (x && Object === x.__proto__.constructor)
       return preventInfiniteLoop(x, prettyObject)
     if ("object" === typeof x)
@@ -57,6 +59,11 @@ export function pretty(x) {
     const innards = Object.entries(x)
       .map(([k, v]) => `${prettyKey(k)}: ${_pretty(v)}`)
     return formatStructure("{", innards, ",", "}")
+  }
+
+  function prettySet(x) {
+    const innards = [...x.values()].map(_pretty)
+    return formatStructure("Set {", innards, ",", "}")
   }
 }
 

@@ -198,6 +198,26 @@ test("pretty", {
     `)
   },
 
+  "formats a set with no members"() {
+    const set = new Set()
+    expect(pretty(set), is, "Set {}")
+  },
+
+  "formats a set with one member"() {
+    const set = new Set([1])
+    expect(pretty(set), is, "Set {1}")
+  },
+
+  "formats a set with two members"() {
+    const set = new Set([1, 2])
+    expect(pretty(set), is, trimMargin`
+      Set {
+        1,
+        2
+      }
+    `)
+  },
+
   "avoids infinite recursion in arrays"() {
     const a = []
     const b = [a]
@@ -223,6 +243,12 @@ test("pretty", {
     const obj = new MyClass()
     obj.foo = obj
     expect(pretty(obj), is, "MyClass {foo: MyClass <circular reference>}")
+  },
+
+  "avoids infinite recursion in sets"() {
+    const set = new Set()
+    set.add(set)
+    expect(pretty(set), is, "Set {<circular reference>}")
   },
 
   "formats a template string"() {

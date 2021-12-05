@@ -21,6 +21,10 @@ export const equals = curry(function(a, b) {
   if (a instanceof Date && b instanceof Date) {
     return a.toISOString() === b.toISOString()
   }
+  if (a instanceof Set && b instanceof Set) {
+    return a.size === b.size
+      && [...a.values()].every(v => b.has(v))
+  }
   if (a instanceof Object && b instanceof Object) {
     const aKeys = Object.keys(a)
     const bKeys = Object.keys(b)
