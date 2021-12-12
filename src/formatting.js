@@ -165,6 +165,10 @@ test("pretty", {
     expect(pretty({constructor: 1}), is, "{constructor: 1}")
   },
 
+  "formats an object with no prototype"() {
+    expect(pretty(Object.create(null)), is, "{}")
+  },
+
   "formats a class instance with an own constructor property"() {
     class SomeClass {}
     const obj = new SomeClass()

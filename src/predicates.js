@@ -116,6 +116,20 @@ test("equals", {
     expect(new ClassOne(), not(equals(new ClassTwo())))
   },
 
+  "given instances of the same class"() {
+    class ClassOne {}
+    expect(new ClassOne(), equals(new ClassOne()))
+  },
+
+  "given instances of the same class with different data"() {
+    class ClassOne {
+      constructor(_x) {
+        this.x = _x
+      }
+    }
+    expect(new ClassOne(1), not(equals(new ClassOne(2))))
+  },
+
   "given a subclass instance and a superclass instance"() {
     class Superclass {}
     class Subclass extends Superclass {}
@@ -149,6 +163,10 @@ test("equals", {
 
   "given equal dates"() {
     expect(new Date("1999-12-21"), equals(new Date("1999-12-21")))
+  },
+
+  "given objects with no prototypes"() {
+    expect(Object.create(null), equals(Object.create(null)))
   },
 
   "given different sets"() {

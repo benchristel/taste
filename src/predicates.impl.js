@@ -25,12 +25,12 @@ export const equals = curry(function(a, b) {
     return a.size === b.size
       && [...a.values()].every(v => b.has(v))
   }
-  if (a instanceof Object && b instanceof Object) {
+  if (isObject(a) && isObject(b)) {
     const aKeys = Object.keys(a)
     const bKeys = Object.keys(b)
     return aKeys.length === bKeys.length
       && aKeys.every(k => equals(a[k], b[k]))
-      && a.__proto__.constructor === b.__proto__.constructor
+      && a.__proto__?.constructor === b.__proto__?.constructor
   }
   return a === b
 }, "equals")
@@ -46,6 +46,10 @@ export const not = curry(function(predicate, subject, ...args) {
 export const isBlank = curry(function(s) {
   return /^\s*$/.test(s)
 }, "isBlank")
+
+function isObject(x) {
+  return !!x && typeof x === "object"
+}
 
 function isCustomMatcher(f) {
   return f instanceof Function

@@ -29,10 +29,13 @@ export function pretty(x) {
       return `${prettyConstructor(x)}(${quote(x.message)})`
     if (x instanceof Set)
       return preventInfiniteLoop(x, prettySet)
-    if (x && Object === x.__proto__.constructor)
-      return preventInfiniteLoop(x, prettyObject)
-    if ("object" === typeof x)
-      return `${prettyConstructor(x)} ${preventInfiniteLoop(x, prettyObject)}`
+    if ("object" === typeof x) {
+      const constructor = x?.__proto__?.constructor
+      if (constructor === Object || !constructor)
+        return preventInfiniteLoop(x, prettyObject)
+      else
+        return `${prettyConstructor(x)} ${preventInfiniteLoop(x, prettyObject)}`
+    }
     return String(x)
   }
 
