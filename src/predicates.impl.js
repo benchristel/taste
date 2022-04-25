@@ -25,6 +25,10 @@ export const equals = curry(function(a, b) {
     return a.size === b.size
       && [...a.values()].every(v => b.has(v))
   }
+  if (a instanceof Error && b instanceof Error) {
+    return a.message === b.message
+      && a.__proto__.constructor === b.__proto__.constructor
+  }
   if (isObject(a) && isObject(b)) {
     const aKeys = Object.keys(a)
     const bKeys = Object.keys(b)

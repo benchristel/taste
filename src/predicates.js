@@ -178,6 +178,24 @@ test("equals", {
     expect(new Set([1, 2]), equals(new Set([2, 1])))
   },
 
+  "given Errors with equal messages"() {
+    expect(new Error("a"), equals(new Error("a")))
+  },
+
+  "given instances of an Error subclass with equal messages"() {
+    class TestError extends Error {}
+    expect(new TestError("a"), equals(new TestError("a")))
+  },
+
+  "given errors with different messages"() {
+    expect(new Error("a"), not(equals(new Error("b"))))
+  },
+
+  "given errors with different classes"() {
+    class TestError extends Error {}
+    expect(new Error("a"), not(equals(new TestError("a"))))
+  },
+
   "given a custom matcher"() {
     const contains = curry(function contains(needle, haystack) {
       return haystack.includes(needle)
