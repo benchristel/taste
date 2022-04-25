@@ -1,6 +1,6 @@
 # @benchristel/taste
 
-A **fast**, modular test library for frontend JS.
+A **fast** test framework for browser JS apps.
 
 ```js
 import {test, expect, is} from "@benchristel/taste"
@@ -24,22 +24,16 @@ test("greet", {
 
 Taste's own tests are written using Taste. [You can run the tests in your browser here](https://benchristel.github.io/taste).
 
-## Try it online!
+## Try it!
 
 https://benchristel.github.io/try-taste/
 
 There is also a set of [downloadable koans/tutorials](https://github.com/benchristel/taste-koans) that walk you through
 Taste's features from basic to advanced, and serve as a reference for how to integrate Taste into a project.
 
-## Prerequisites
+## Project Templates
 
-Taste might be a good fit for your project if...
-
-- You use browser-native ECMAScript modules (ESM) in
-  development, via e.g. Snowpack or Vite.
-- You have an abundance of gumption and are willing to get
-  your hands a bit dirty. Taste is beta code, designed for
-  people who like tools they can thoroughly understand.
+- [React + Flow + Snowpack + Taste](https://github.com/benchristel/react-flow-snowpack-taste)
 
 ## Installation
 
@@ -47,81 +41,23 @@ Taste might be a good fit for your project if...
 yarn add @benchristel/taste
 ```
 
-Some assembly required; batteries not included. See below
-for setup instructions, or refer to an
-[example project](https://github.com/benchristel/taste-koans).
+## Features
 
-## What does it do?
+- **Tests run in the browser.** You can integrate test
+  results into the dev UI of your app!
+- **Tests can live in the same files as production code.**
+  Or you can use any other organization scheme. The tests
+  are automatically stripped out of production builds of
+  your app.
+- **The tests are fast**—up to 50x faster than Jest tests.
+  Taste can run tens of thousands of tests per second.
+- **Custom matchers couldn't be simpler.** Any function
+  that returns a boolean can be used in a test assertion.
+  Test failures still get pretty-formatted as you'd expect.
+- **The syntax is minimal.** Taste supports both
+  BDD-style and xUnit test naming conventions.
 
-- Tests run in the browser. You can easily integrate the
-  test results into the dev UI of your app.
-- Your tests can live right next to the production code
-  they're testing—in the same file, even. The tests are
-  automatically stripped out of production builds of your
-  app.
-- The tests run extremely fast—up to 50x faster than Jest
-  tests. Taste can run tens of thousands of tests per second.
-- Add [Snowpack](https://www.snowpack.dev/) for
-  auto-refresh, and you can get near-instantaneous test
-  feedback whenever you change a JavaScript file.
-- To run tests in CI or as a pre-push hook, you can set up
-  [Puppeteer](https://developers.google.com/web/tools/puppeteer/),
-  which runs the tests in a headless Chrome browser. That
-  might sound like a lot of overhead, but it's _still
-  slightly faster than using Jest_ (1.2s vs. 1.3s startup
-  time on my machine).
-- Adding your own matchers is simple as can be: any function
-  that returns a boolean can be used as a matcher. Test
-  failures still get pretty-formatted as you'd expect.
-- Taste's minimalistic syntax supports both BDD-style and
-  xUnit test naming conventions. You can name your tests
-  after behaviors, scenarios, or test subjects, as you
-  prefer. The outline of your tests will be readable no
-  matter what convention you choose.
-- You can easily insert custom matchers into deep-equality
-  assertions, to compare subtrees however you choose.
-  This makes Taste a good choice for property-based testing,
-  runtime typechecking, or testing non-deterministic code.
-  For example:
-
-  ```js
-  import {test, expect, equals, curry, which} from "@benchristel/taste"
-
-  const isBetween = curry(function isBetween(min, max, n) {
-    return n >= min && n <= max
-  })
-
-  test("randomDndCharacter", {
-    "generates ability scores"() {
-      expect(randomDndCharacter(), equals, {
-        str: which(isBetween(7, 18)),
-        dex: which(isBetween(7, 18)),
-        con: which(isBetween(7, 18)),
-        int: which(isBetween(7, 18)),
-        wis: which(isBetween(7, 18)),
-        cha: which(isBetween(7, 18)),
-      })
-    },
-  })
-  ```
-
-- Tests can use `async/await`: e.g.
-
-  ```js
-  import {test, expect, is} from "@benchristel/taste"
-
-  async function promiseOf(value) {
-    return Promise.resolve(value)
-  }
-
-  test("promiseOf", {
-    async "resolves to the value"() {
-      expect(await promiseOf(123), is, 123)
-    },
-  })
-  ```
-
-## What doesn't it do?
+## Non-features
 
 - `async` tests are not run in parallel. Thus, if you
   `await` a 100ms timer in a test, your suite will take
@@ -150,113 +86,203 @@ for setup instructions, or refer to an
   Or use another mocking library; [there are plenty to
   choose from](https://www.npmjs.com/search?q=mock).
 
-## Serving Suggestions
+## Recommended Integrations
 
-Taste provides basic facilities for writing and running
-tests, but is unopinionated about how tests are imported and
-their results displayed. This section contains advice on
-integrating Taste into your project.
+- Add [Snowpack](https://www.snowpack.dev/) for
+  auto-refresh, and you can get near-instantaneous test
+  feedback whenever you change a JavaScript file.
+- To run tests in CI or as a pre-push hook, you can set up
+  [Puppeteer](https://developers.google.com/web/tools/puppeteer/),
+  which runs the tests in a headless Chrome browser. That
+  might sound like a lot of overhead, but it's _still
+  slightly faster than using Jest_ (1.2s vs. 1.3s startup
+  time on my machine).
 
-### Importing tests
+## API Documentation
 
-Taste differs from other test frameworks in that there is
-no automatic "test discovery". While Jest lets you specify
-a filename pattern like `*.test.js` to load for testing,
-Taste uses plain old `import` to load test files into the
-browser. If your test files are not imported, the tests
-won't run!
+### Overview
 
-There are several patterns you can follow to ensure test
-files get loaded:
+### Writing Tests
 
-- Put your tests in the same file as the code they're
-  testing! TDDers are fond of saying that tests serve as
-  runnable documentation. So just put your tests next to
-  your production code, and then you can delete all those
-  pesky doc comments.
-- Put your tests in separate files, and import them directly
-  from your main JavaScript file (`index.js` or `App.js` or
-  whatever). The downside of this approach is that you have
-  to remember to update `index.js` whenever you add a test
-  file. You might also get merge conflicts if many devs add
-  test imports to `index.js` concurrently.
-- Do what Taste's own codebase does: put the tests and
-  documentation for module `foo` in `foo.js`, and the
-  production code in `foo.impl.js`, which `foo.js` imports
-  and re-exports. This may seem strange at first, but it has
-  a few distinct advantages:
-  - It cleanly separates interface from implementation:
-    `foo.js` contains the tests, documentation, and list of
-    exports for the module `foo`; someone who wants to use
-    `foo` can just read that file and not have to scroll
-    through the implementation.
-  - `foo.impl.js` can export code that `foo.js` doesn't
-    re-export; this allows `foo.js` to directly test that
-    code while clearly communicating that it isn't used
-    outside the `foo` module.
-  - If you maintain the convention that other modules must
-    import `foo.js` and not `foo.impl.js`, you never have to
-    worry that your tests won't be loaded.
-
-### Displaying test output
-
-You can run all your tests and display the results by doing
-something like this:
-
-```js
-// index.js
-import "./App.js"
-import {getAllTests, runTests, formatTestResultsAsText} from "@benchristel/taste"
-
-// getAllTests() must be called *after* all test files have
-// been imported, which is supposed to happen via the
-// `import "./App.js"` above
-document.getElementById("testResults").innerText
-  = formatTestResultsAsText(await runTests(getAllTests()))
+```
+import {
+  test,
+  expect,
+  is,
+  equals,
+  not,
+  which,
+} from "@benchristel/taste"
 ```
 
-Of course, you're probably using a UI library that
-discourages directly setting `innerText` on an element.
-Here's how you might render Taste test results in a React
-component:
+#### `test(subject: string, TestDefinitions): void`
 
-```js
-// index.js
-import "./App.js"
+The `test` method is the usual way of writing tests in
+Taste. The `TestDefinitions` type is a map of strings
+(test scenario names) to test functions:
 
-// getAllTests() must be called *after* all test files have
-// been imported, which is supposed to happen via the
-// `import "./App.js"` above
-window.testResults = await runTests(getAllTests())
-```
-
-```js
-// TestResults.jsx
-import * as React from "react"
-import {getAllTests, runTests, formatTestResultsAsText} from "@benchristel/taste"
-
-export function TestResults() {
-  return <code>
-    <pre>
-      {formatTestResultsAsText(window.testResults)}
-    </pre>
-  </code>
+```ts
+type TestDefinitions = {
+  [scenario: string]: () => void | Promise<void>,
 }
 ```
 
-Taste's built-in formatter renders test results as plain
-text, but you needn't be limited to this. `await runTests`
-returns a simple JavaScript object suitable for rendering
-in a variety of forms. Rendering the test output as a
-stylish tree of React elements is left as an exercise for
-the reader.
+Typical usage looks like this:
 
-Depending on how your app is structured, you may want to
-render the test results in a separate HTML file from your
-main app, or on a separate route/page within your app. It's
-up to you!
+```js
+import {test, expect, is} from "@benchristel/taste"
 
-### Removing tests from production builds
+test("a Counter", {
+  "starts at zero"() {
+    const c = new Counter()
+    expect(c.value(), is, 0)
+  },
+
+  "increments once"() {
+    const c = new Counter()
+    c.increment()
+    expect(c.value(), is, 1)
+  },
+})
+```
+
+When the test results are formatted using Taste's built-in
+formatter (`formatTestResultsAsText`), the subject name
+and scenario name will be concatenated for each test. So
+in the above example, you'd see failure messages like:
+
+```
+a Counter increments once
+  expect(
+    0,
+    is,
+    1
+  )
+```
+
+#### `expect(actual, predicate: () => boolean, ...expected): void`
+
+Throws an error if the given `predicate` returns a falsey
+value when passed the `expected` and `actual` values.
+
+Note that the `subject` is passed as the _last_ argument
+to the predicate function. This is to accommodate predicates
+that are designed to be curried.
+
+Here's an example of how you might define a custom
+`isGreaterThan` predicate:
+
+```js
+import {test, expect, is} from "@benchristel/taste"
+
+function isGreaterThan(reference, n) {
+  return n > reference
+}
+
+test("rolling a die", {
+  "produces a positive number"() {
+    expect(rollDie(), isGreaterThan, 0)
+  },
+})
+```
+
+#### `is(expected, actual): boolean`
+
+Returns whether its arguments are `===`.
+
+`is` is curried, so the following are equivalent:
+
+```js
+expect(1 + 1, is, 2)
+expect(1 + 1, is(2))
+```
+
+#### `equals(expected, actual): boolean`
+
+Returns whether two objects are deeply equal. The rules
+for comparison are complicated, but work similarly to the
+ones in Jest, Jasmine, and other test frameworks you might
+be familiar with. For examples of behavior, see
+[the tests](https://github.com/benchristel/taste/blob/main/src/predicates.js).
+
+```js
+equals({a: 1}, {a: 1}) // true
+equals({a: 1}, {a: 2}) // false
+```
+
+`equals` is curried, so the following are equivalent:
+
+```js
+expect(1 + 1, equals, 2)
+expect(1 + 1, equals(2))
+```
+
+#### `not(p: () => boolean): () => boolean`
+
+Returns a negated version of the given predicate `p`; i.e.
+`not(p)` returns true for some arguments iff `p` returns
+falsey for those arguments.
+
+The following are equivalent:
+
+```
+expect(2 + 2, not(is), 5)
+expect(2 + 2, not(is(5)))
+```
+
+#### `curry(func, name)`
+
+Returns a curried version of the given function.
+Partially-applied functions generated from the curried
+function will be pretty-printed by
+`formatTestResultsAsText` in a format that includes the
+given `name`.
+
+#### `which(predicate): magic`
+
+Given a predicate, returns a magical object that `equals`
+any value for which the predicate returns truthy. You can
+use `which` to customize how objects should be compared when
+using `equals`—usually to relax some constraint.
+
+```js
+const isBetween = curry((min, max, n) => {
+  return n >= min && n <= max
+}, "isBetween")
+
+test("randomDndCharacter", {
+  "generates reasonable ability scores"() {
+    expect(randomDndCharacter(), equals, {
+      str: which(isBetween(7, 18)),
+      dex: which(isBetween(7, 18)),
+      con: which(isBetween(7, 18)),
+      int: which(isBetween(7, 18)),
+      wis: which(isBetween(7, 18)),
+      cha: which(isBetween(7, 18)),
+    })
+  },
+})
+```
+
+### Running Tests
+
+```
+import {
+  getAllTests,
+  runTests,
+  formatTestResultsAsText,
+} from "@benchristel/taste"
+```
+
+#### `getAllTests(): Array<Test>`
+
+Returns all tests that have been registered via `test()`.
+Nilpotent, but may return different results on subsequent
+calls if there are intervening calls to `test()`.
+
+#### `runTests(Array<Test>): Promise<SuiteResults>`
+
+#### `formatTestResultsAsText(SuiteResults): string`
 
 If you're using Webpack, Rollup, or most other module
 bundlers, you shouldn't have to do anything special to
@@ -265,6 +291,8 @@ If you find that tests are showing up in bundled code,
 ensure that `process.env.NODE_ENV === "production"` and your
 optimizer is configured for tree-shaking / dead code
 elimination.
+
+## Integrating with build tools
 
 ### Snowpack
 
