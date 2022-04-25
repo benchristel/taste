@@ -54,8 +54,6 @@ yarn add @benchristel/taste
 - **Custom matchers couldn't be simpler.** Any function
   that returns a boolean can be used in a test assertion.
   Test failures still get pretty-formatted as you'd expect.
-- **The syntax is minimal.** Taste supports both
-  BDD-style and xUnit test naming conventions.
 
 ## Non-features
 
@@ -99,8 +97,6 @@ yarn add @benchristel/taste
   time on my machine).
 
 ## API Documentation
-
-### Overview
 
 ### Writing Tests
 
