@@ -278,15 +278,13 @@ calls if there are intervening calls to `test()`.
 
 #### `runTests(Array<Test>): Promise<SuiteResults>`
 
+Runs tests asynchronously and returns their results as a
+machine-readable object.
+
 #### `formatTestResultsAsText(SuiteResults): string`
 
-If you're using Webpack, Rollup, or most other module
-bundlers, you shouldn't have to do anything special to
-remove Taste tests from the production build of your app.
-If you find that tests are showing up in bundled code,
-ensure that `process.env.NODE_ENV === "production"` and your
-optimizer is configured for tree-shaking / dead code
-elimination.
+Formats test results from `runTests` as a human-readable
+string.
 
 ## Integrating with build tools
 
@@ -299,7 +297,8 @@ I recommend bundling your code for production with
 `@snowpack/plugin-webpack`. This will automatically remove
 any `taste` tests from your production build.
 
-If you use snowpack+webpack, do not put any JavaScript
+Non-Taste-specific note: if you use snowpack+webpack, do not
+put any JavaScript
 directly in your `index.html`; as of this writing, the
 webpack plugin will not build it correctly and it will not
 be run in the bundled version of your site. Instead, do
@@ -352,6 +351,16 @@ in `*.impl.js` or `*.impl.jsx` files, and only those files
 would get hot-reloaded. An alternative would be to use
 something like `exclude: ["**/*.test.js"]` if you use that
 naming convention.
+
+### Removing tests from production builds
+
+If you're using Webpack, Rollup, or most other module
+bundlers, you shouldn't have to do anything special to
+remove Taste tests from the production build of your app.
+If you find that tests are showing up in bundled code,
+ensure that `process.env.NODE_ENV === "production"` and your
+optimizer is configured for tree-shaking / dead code
+elimination.
 
 ## Development
 
