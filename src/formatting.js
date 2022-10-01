@@ -40,7 +40,7 @@ test("pretty", {
   },
 
   "represents bigints"() {
-    expect(pretty(100n), is, "100n")
+    expect(pretty(BigInt("100")), is, "100n")
   },
 
   "represents null as 'null'"() {

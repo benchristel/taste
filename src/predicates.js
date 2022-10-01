@@ -25,12 +25,12 @@ test("equals", {
   },
 
   "compares bigints"() {
-    expect(equals(10n, 99n), is, false)
-    expect(equals(10n, 10n), is, true)
+    expect(equals(BigInt("10"), BigInt("99")), is, false)
+    expect(equals(BigInt("10"), BigInt("10")), is, true)
   },
 
   "compares bigints to numbers"() {
-    expect(equals(10n, 10), is, false)
+    expect(equals(BigInt("10"), 10), is, false)
   },
 
   "is curried"() {
