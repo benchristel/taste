@@ -1,6 +1,6 @@
 {
   "name": "@benchristel/taste",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A fast, modular test library for frontend JS",
   "keywords": ["auto","ava","bdd","browser","chai","es6","fast","framework","hmr","instant","jasmine","jest","library","mocha","modular","module","modules","refresh","reload","simple","snowpack","tap","tape","taste","tdd","test","testing","tests","vite","xunit"],
   "author": "Ben Christel <bchristel@pivotal.io>",
