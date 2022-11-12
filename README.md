@@ -1,13 +1,10 @@
 # @benchristel/taste
 
-A **fast** test framework for browser JS apps.
+A **fast** JavaScript test framework, for browser apps, NPM packages, and Node.js
+scripts.
 
 ```js
 import {test, expect, is} from "@benchristel/taste"
-
-function greet(whomst) {
-  return `Hello, ${whomst || "you person, you"}!`
-}
 
 test("greet", {
   "greets the world"() {
@@ -18,6 +15,10 @@ test("greet", {
     expect(greet(null), is, "Hello, you person, you!")
   },
 })
+
+function greet(name) {
+  return `Hello, ${name || "you person, you"}!`
+}
 ```
 
 ## Build Status
@@ -31,6 +32,28 @@ https://benchristel.github.io/try-taste/
 There is also a set of [downloadable koans/tutorials](https://github.com/benchristel/taste-koans) that walk you through
 Taste's features from basic to advanced, and serve as a reference for how to integrate Taste into a project.
 
+## Node.js Quick Start
+
+```js
+// copy-paste this into test.mjs
+import {test, expect, is} from "@benchristel/taste"
+import {getAllTests, runTests, formatTestResultsAsText} from "@benchristel/taste"
+
+// add a test to the global suite
+test("my first Taste test", {
+  "runs"() {
+    expect(1 + 1, is, 2)
+  },
+})
+
+// run the tests and print the results
+runTests(getAllTests())
+  .then(formatTestResultsAsText)
+  .then(console.log)
+```
+
+Then run `time node test.mjs`. Replace `node` with `bun` to go even faster!
+
 ## Project Templates
 
 - [React + Flow + Snowpack + Taste](https://github.com/benchristel/react-flow-snowpack-taste)
@@ -43,7 +66,7 @@ yarn add @benchristel/taste
 
 ## Features
 
-- **Tests run in the browser.** You can integrate test
+- **Tests can run in the browser.** You can integrate test
   results into the dev UI of your app!
 - **Tests can live in the same files as production code.**
   Or you can use any other organization scheme. The tests
@@ -310,23 +333,7 @@ something like this to include your root `index.js` module:
 
 ### Vite + React
 
-Taste works great with Vite! I recommend it. You will need
-to make a couple tweaks to get it to work well, though.
-
-First, set your build target to something that supports
-bigints, e.g. `chrome91`.
-
-```js
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-
-// https://vitejs.dev/config/
-export default defineConfig({
-  build: {
-    target: "chrome91",
-  },
-})
-```
+Taste works great with Vite! I recommend it.
 
 To ensure your tests run automatically and you do not see
 duplicate test results when components get hot-reloaded, I
