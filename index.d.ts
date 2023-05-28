@@ -18,10 +18,12 @@ declare module "@benchristel/taste" {
 
   export function equals(a: any, b: any): boolean
   export function equals(a: any): (b: any) => boolean
+
   export function test(
     subject: string,
-    examples: {[title: string]: () => unknown},
+    testDefinitions: {[title: string]: () => unknown},
   ): void
+
   export function expect<A>(
     actual: A,
     matcher: (a: A) => unknown,
