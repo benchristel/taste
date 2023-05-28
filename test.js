@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-const puppeteer = require('puppeteer')
-const path = require('path')
+import puppeteer from "puppeteer"
 
 ;(async () => {
   const browser = await puppeteer.launch()
