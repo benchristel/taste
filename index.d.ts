@@ -1,12 +1,21 @@
 declare module "@benchristel/taste" {
+  export function curry<Ret>(
+    f: () => Ret,
+    name?: string,
+  ): () => Ret
+  export function curry<A1, Ret>(
+    f: (a1: A1) => Ret,
+    name?: string,
+  ): (a1: A1) => Ret
   export function curry<A1, A2, Ret>(
     f: (a1: A1, a2: A2) => Ret,
-    name: string,
+    name?: string,
   ): Curried2<A1, A2, Ret>
   export function curry<A1, A2, A3, Ret>(
     f: (a1: A1, a2: A2, a3: A3) => Ret,
-    name: string,
+    name?: string,
   ): Curried3<A1, A2, A3, Ret>
+
   export function equals(a: any, b: any): boolean
   export function equals(a: any): (b: any) => boolean
   export function test(

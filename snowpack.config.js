@@ -4,7 +4,7 @@
 /** @type {import("snowpack").SnowpackUserConfig } */
 export default {
   root: ".",
-  exclude: ["**/node_modules/**/*", "**/test.js"],
+  exclude: ["**/node_modules/**/*", "**/test.js", "**/type-tests/test.ts"],
   mount: {
     /* ... */
   },
