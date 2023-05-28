@@ -46,6 +46,7 @@ declare module "@benchristel/taste" {
     arg1: C,
     arg2: D,
   ): void
+
   export function is(a: any, b: any): boolean
   export function is(a: any): (b: any) => boolean
   export function not(predicate: Predicate): Predicate

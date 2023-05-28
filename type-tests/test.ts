@@ -1,4 +1,4 @@
-import {curry, equals, test} from "@benchristel/taste"
+import {curry, equals, test, expect} from "@benchristel/taste"
 
 function assertAssignableTo<T>(a: T) {}
 
@@ -176,4 +176,33 @@ function assertAssignableTo<T>(a: T) {}
     // @ts-expect-error
     "works"(a: string) {}
   })
+}
+
+// Tests for expect()
+;() => {
+  // @ts-expect-error
+  expect(1)
+
+  // @ts-expect-error
+  expect(1, 2)
+
+  expect(1, equals(2))
+
+  expect(1, equals, 2)
+
+  expect(1, (a: 2, b: 3, c: 1) => true, 2, 3)
+
+  expect(1, (a: 2, b: 3, c: 4, d: 1) => true, 2, 3, 4)
+
+  // @ts-expect-error
+  expect(1, (a: 2, b: 3, c: 1) => true, 2, false)
+
+  // @ts-expect-error
+  expect(1, (a: 2, b: 3, c: 1) => true, false, 3)
+
+  // @ts-expect-error
+  expect(false, (a: 2, b: 3, c: 1) => true, 2, 3)
+
+  // @ts-expect-error
+  expect(false, (a: 2, b: 3, c: 3, d: 1) => true, 2, 3)
 }
