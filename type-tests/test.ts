@@ -1,4 +1,4 @@
-import {curry} from "@benchristel/taste"
+import {curry, equals} from "@benchristel/taste"
 
 function assertAssignableTo<T>(a: T) {}
 
@@ -146,4 +146,11 @@ function assertAssignableTo<T>(a: T) {}
     // @ts-expect-error
     curry((a: 1, b: 2, c: 3) => 0),
   )
+}
+
+// Tests for equals()
+;() => {
+  assertAssignableTo<boolean>(equals(1, 2));
+
+  assertAssignableTo<(a: unknown) => boolean>(equals(1));
 }
