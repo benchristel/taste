@@ -1,4 +1,4 @@
-import {curry, equals, test, expect} from "@benchristel/taste"
+import {curry, equals, is, test, expect} from "@benchristel/taste"
 
 function assertAssignableTo<T>(a: T) {}
 
@@ -153,6 +153,13 @@ function assertAssignableTo<T>(a: T) {}
   assertAssignableTo<boolean>(equals(1, 2));
 
   assertAssignableTo<(a: unknown) => boolean>(equals(1));
+}
+
+// Tests for is()
+;() => {
+  assertAssignableTo<boolean>(is(1, 2));
+
+  assertAssignableTo<(a: unknown) => boolean>(is(1));
 }
 
 // Tests for test()

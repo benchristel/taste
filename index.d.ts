@@ -19,6 +19,9 @@ declare module "@benchristel/taste" {
   export function equals(a: any, b: any): boolean
   export function equals(a: any): (b: any) => boolean
 
+  export function is(a: any, b: any): boolean
+  export function is(a: any): (b: any) => boolean
+
   export function test(
     subject: string,
     testDefinitions: {[title: string]: () => unknown},
@@ -47,8 +50,6 @@ declare module "@benchristel/taste" {
     arg2: D,
   ): void
 
-  export function is(a: any, b: any): boolean
-  export function is(a: any): (b: any) => boolean
   export function not(predicate: Predicate): Predicate
   export function which(predicate: Predicate): any
   export function runTests(
