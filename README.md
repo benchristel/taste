@@ -56,7 +56,8 @@ Then run `time node test.mjs`. Replace `node` with `bun` to go even faster!
 
 ## Project Templates
 
-- [React + Flow + Snowpack + Taste](https://github.com/benchristel/react-flow-snowpack-taste)
+- [Preact + TypeScript + Vite + Taste](https://github.com/benchristel/preact-typescript-vite-taste) (recommended)
+- [React + Flow + Snowpack + Taste](https://github.com/benchristel/react-flow-snowpack-taste) (deprecated)
 
 ## Installation
 
