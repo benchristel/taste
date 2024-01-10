@@ -1,10 +1,10 @@
-export {runTests, debug} from "./src/test-runner.impl.js"
-export {expect, createSuite} from "./src/testing.impl.js"
-export {is, not, equals, which} from "./src/predicates.impl.js"
-export {curry} from "./src/curry.impl.js"
-export {formatTestResultsAsText, reportsFailure} from "./src/plain-text-test-formatter.impl.js"
+export {runTests, debug} from "./src/test-runner.js"
+export {expect, createSuite} from "./src/testing.js"
+export {is, not, equals, which} from "./src/predicates.js"
+export {curry} from "./src/curry.js"
+export {formatTestResultsAsText, reportsFailure} from "./src/plain-text-test-formatter.js"
 
-import {createSuite} from "./src/testing.impl.js"
+import {createSuite} from "./src/testing.js"
 
 const suite = createSuite()
 

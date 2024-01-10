@@ -1,4 +1,4 @@
-import {curry, curriedFunction, partialArgs, originalFunction} from "./curry.impl.js"
+import {curry, curriedFunction, partialArgs, originalFunction} from "./curry.js"
 
 export const which = curry(function(predicate, x) {
   return predicate(x)

@@ -1,4 +1,4 @@
-import {prettyFunctionName} from "./formatting.impl.js"
+import {prettyFunctionName} from "./formatting.js"
 
 const suite = createSuite()
 

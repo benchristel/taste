@@ -1,5 +1,5 @@
-import {trimMargin, indent, formatStructure, pretty} from "./formatting.impl.js"
-import {ExpectationFailure} from "./testing.impl.js"
+import {trimMargin, indent, formatStructure, pretty} from "./formatting.js"
+import {ExpectationFailure} from "./testing.js"
 
 const blankLine = "\n\n"
 

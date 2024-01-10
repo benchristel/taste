@@ -1,7 +1,7 @@
-import {formatTestResultsAsText, reportsFailure, formatFunctionCall} from "./plain-text-test-formatter.impl.js"
-import {test, expect, ExpectationFailure} from "./testing.impl.js"
-import {is, not} from "./predicates.impl.js"
-import {trimMargin} from "./formatting.impl.js"
+import {formatTestResultsAsText, reportsFailure, formatFunctionCall} from "./plain-text-test-formatter.js"
+import {test, expect, ExpectationFailure} from "./testing.js"
+import {is, not} from "./predicates.js"
+import {trimMargin} from "./formatting.js"
 
 const basePassingTest = Object.freeze({
   test: {

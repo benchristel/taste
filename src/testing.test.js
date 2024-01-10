@@ -1,4 +1,4 @@
-import {expect, createSuite, test} from "./testing.impl.js"
+import {expect, createSuite, test} from "./testing.js"
 
 function is(a, b) {
   return a === b

@@ -1,6 +1,6 @@
-import {curry, functionName} from "./curry.impl.js"
+import {curry, functionName} from "./curry.js"
 
-import {test, expect} from "./testing.impl.js"
+import {test, expect} from "./testing.js"
 
 function is(a, b) {
   return a === b

@@ -1,6 +1,6 @@
-import {curry, partialArgs, functionName} from "./curry.impl.js"
+import {curry, partialArgs, functionName} from "./curry.js"
 import {firstOf, lastOf} from "./indexables.js"
-import {isBlank} from "./predicates.impl.js"
+import {isBlank} from "./predicates.js"
 
 export function prettyFunctionName(f) {
   return functionName(f) || "<function>"
