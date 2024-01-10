@@ -9,13 +9,14 @@
   "private": false,
   "main": "index.js",
   "scripts": {
+    "dev": "yarn run vite --port 8080",
     "test": "yarn test:types && ./test.js",
     "test:types": "tsc --noEmit --skipLibCheck index.d.ts type-tests/test.ts"
   },
   "devDependencies": {
     "puppeteer": "^10.2.0",
-    "snowpack": "^3.8.8",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "vite": "^5.0.11"
   },
   "type": "module",
   "types": "./index.d.ts"

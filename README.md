@@ -377,7 +377,7 @@ itself.
 Fast test runner:
 
 ```
-yarn snowpack dev
+yarn dev
 open http://localhost:8080
 ```
 
