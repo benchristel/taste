@@ -9,11 +9,13 @@
   "private": false,
   "main": "index.js",
   "scripts": {
+    "build": "./tools/build.sh",
     "dev": "yarn run vite --port 8080",
     "test": "yarn test:types && ./test.js",
     "test:types": "tsc --noEmit --skipLibCheck index.d.ts type-tests/test.ts"
   },
   "devDependencies": {
+    "esbuild": "0.19.11",
     "puppeteer": "^10.2.0",
     "typescript": "^5.0.4",
     "vite": "^5.0.11"
