@@ -1,10 +1,8 @@
-export {runTests, debug} from "./test-runner.impl.js"
 import {runTests, debug, debugLogs} from "./test-runner.impl.js"
 
-import {curry} from "./curry.js"
-import {test, expect, ExpectationFailure} from "./testing.js"
-import {is, not, equals, which} from "./predicates.js"
-import {trimMargin} from "./formatting.js"
+import {curry} from "./curry.impl.js"
+import {test, expect, ExpectationFailure} from "./testing.impl.js"
+import {is, equals, which} from "./predicates.impl.js"
 
 function isDefined(x) {
   return typeof x !== "undefined"

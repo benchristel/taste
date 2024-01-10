@@ -1,5 +1,3 @@
-import {pretty, indent, toLines, trimMargin, formatStructure} from "./formatting.js"
-
 export async function runTests(tests) {
   const results = []
   for (const test of tests) {

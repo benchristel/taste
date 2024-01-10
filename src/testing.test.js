@@ -1,4 +1,3 @@
-export {expect, createSuite, test, getAllTests, ExpectationFailure} from "./testing.impl.js"
 import {expect, createSuite, test} from "./testing.impl.js"
 
 function is(a, b) {

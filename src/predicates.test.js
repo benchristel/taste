@@ -1,8 +1,7 @@
-export {is, not, equals, which, isBlank} from "./predicates.impl.js"
 import {is, not, equals, which, isBlank} from "./predicates.impl.js"
 
-import {curry, functionName} from "./curry.js"
-import {test, expect} from "./testing.js"
+import {curry, functionName} from "./curry.impl.js"
+import {test, expect} from "./testing.impl.js"
 
 const eq = (a, b) => a === b
 

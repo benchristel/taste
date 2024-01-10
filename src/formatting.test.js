@@ -1,13 +1,10 @@
 import {
   indent, pretty, toLines, trimMargin, quote, repeat,
 } from "./formatting.impl.js"
-export {
-  indent, pretty, toLines, trimMargin, formatStructure
-} from "./formatting.impl.js"
 
-import {test, expect} from "./testing.js"
-import {is} from "./predicates.js"
-import {curry} from "./curry.js"
+import {test, expect} from "./testing.impl.js"
+import {is} from "./predicates.impl.js"
+import {curry} from "./curry.impl.js"
 
 test("repeat", {
   "repeats a string zero times"() {

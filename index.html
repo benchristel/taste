@@ -10,8 +10,9 @@
   <body>
     <code><pre id="testOutput"></pre></code>
     <script type="module">
+import.meta.glob("./src/**/*.test.*", {eager: true})
 import {runTests, reportsFailure, formatTestResultsAsText} from "./index.js"
-import {getAllTests} from "./src/testing.js"
+import {getAllTests} from "./src/testing.impl.js"
 
 const results = await runTests(getAllTests())
 const output = formatTestResultsAsText(results)

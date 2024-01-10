@@ -1,7 +1,6 @@
-export {curry, functionName, partialArgs, curriedFunction, originalFunction} from "./curry.impl.js"
 import {curry, functionName} from "./curry.impl.js"
 
-import {test, expect} from "./testing.js"
+import {test, expect} from "./testing.impl.js"
 
 function is(a, b) {
   return a === b
