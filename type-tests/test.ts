@@ -1,4 +1,4 @@
-import {curry, equals, is, test, expect} from "@benchristel/taste"
+import {curry, equals, is, test, expect, trimMargin} from "@benchristel/taste"
 
 function assertAssignableTo<T>(a: T) {}
 
@@ -212,4 +212,10 @@ function assertAssignableTo<T>(a: T) {}
 
   // @ts-expect-error
   expect(false, (a: 2, b: 3, c: 3, d: 1) => true, 2, 3)
+}
+
+// Tests for trimMargin
+;() => {
+  assertAssignableTo<string>(trimMargin(""))
+  assertAssignableTo<string>(trimMargin``)
 }

@@ -59,6 +59,7 @@ declare module "@benchristel/taste" {
   export function formatTestResultsAsText(results: any): string
   export function createSuite(): {test: any; getAllTests: any}
   export function debug(value: any): void
+  export function trimMargin(s: TemplateStringsArray | string): string
 
   type Predicate = (...args: Array<any>) => any
   type TestList = Array<Test>
