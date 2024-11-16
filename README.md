@@ -110,10 +110,10 @@ yarn add @benchristel/taste
 
 ## Recommended Integrations
 
-- Add [Snowpack](https://www.snowpack.dev/) for
+- Add [Vite](https://vitejs.dev/) for
   auto-refresh, and you can get near-instantaneous test
   feedback whenever you change a JavaScript file.
-- To run tests in CI or as a pre-push hook, you can set up
+- To run browser tests in CI or as a pre-push hook, you can set up
   [Puppeteer](https://developers.google.com/web/tools/puppeteer/),
   which runs the tests in a headless Chrome browser. That
   might sound like a lot of overhead, but it's _still
