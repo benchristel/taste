@@ -52,7 +52,7 @@ runTests(getAllTests())
   .then(console.log)
 ```
 
-Then run `time node test.mjs`. Replace `node` with `bun` to go even faster!
+Then run `time node test.mjs`. Replace `node` with `bun` to go even faster! You can also use `bun --hot test.mjs` to run your tests on every code change.
 
 ## Project Templates
 
