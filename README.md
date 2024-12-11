@@ -21,6 +21,16 @@ function greet(name) {
 }
 ```
 
+## Fast?
+
+Oh, yes. Here are the results of running Taste's own test suite 768 times in Firefox on a 2.4 GHz Intel CPU:
+
+![134400 tests ran, and found no issues. 521 ms elapsed.](https://github.com/user-attachments/assets/0d3a40f0-4970-43b6-b805-aba6b60272b1)
+
+134400 tests in about half a second! I'm going to bet your program doesn't have that many tests.
+
+You should take this measurement with a grain of salt, though, because when the same tests run many times, the JIT has more time to optimize the code. Still, _I_ think this is pretty cool.
+
 ## Build Status
 
 Taste's own tests are written using Taste. [You can run the tests in your browser here](https://benchristel.github.io/taste).
