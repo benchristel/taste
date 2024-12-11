@@ -21,6 +21,16 @@ function greet(name) {
 }
 ```
 
+Taste's design philosophy is that **a test is just a function**. Testing doesn't have to be more complicated than that! Some nice consequences of this idea:
+
+- Running a test suite is just calling a function.
+- A matcher is just a function that returns a boolean.
+- An assertion is just a function that throws an exception.
+
+The result of all this is that **your tests can run anywhere JS can.** You can easily run them in the browser, or in NodeJS, Bun, or Deno. Heck, your smart TV could probably run Taste, though I haven't tried this (let me know if you do).
+
+Taste achieves this simplicity without major sacrifices to ergonomics or aesthetics. Just look at the example above!
+
 ## Fast?
 
 Oh, yes. Here are the results of running Taste's own test suite 768 times in Firefox on a 2.4 GHz Intel CPU:
