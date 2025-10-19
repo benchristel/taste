@@ -1,4 +1,4 @@
-import {curry, curriedFunction, partialArgs, originalFunction} from "./curry.js"
+import {curry, partialArgs, originalFunction} from "./curry.js"
 
 export const which = curry(function(predicate, x) {
   return predicate(x)
@@ -57,6 +57,6 @@ function isObject(x) {
 
 function isCustomMatcher(f) {
   return f instanceof Function
-    && curriedFunction(f) === which
+    && originalFunction(f) === which
     && partialArgs(f).length === 1
 }

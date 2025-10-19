@@ -1,8 +1,4 @@
 declare module "@benchristel/taste" {
-  export function curry<Ret>(
-    f: () => Ret,
-    name?: string,
-  ): () => Ret
   export function curry<A1, Ret>(
     f: (a1: A1) => Ret,
     name?: string,

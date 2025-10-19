@@ -148,10 +148,6 @@ test("equals", {
     expect(equals({foo: 1}), equals, equals({foo: 1}))
   },
 
-  "equates a partially applied function with no args to an unapplied function"() {
-    expect(equals(), equals, equals)
-  },
-
   "given partially applied functions with different arguments"() {
     expect(equals({foo: 2}), not(equals(equals({foo: 1}))))
   },
@@ -214,13 +210,10 @@ test("equals", {
   },
 
   "if you mistakenly use `which` without passing arguments"() {
-    const contains = curry(function contains(needle, haystack) {
-      return haystack.includes(needle)
-    })
     expect(
       {foo: "hello"},
       not(equals(
-        {foo: which()},
+        {foo: which},
       )),
     )
   },

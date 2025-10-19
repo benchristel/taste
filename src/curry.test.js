@@ -33,11 +33,6 @@ test("curry", {
     expect(add3(1, 2)(4), is, 7)
   },
 
-  "treats a call with no args as a no-op"() {
-    const add3 = curry((a, b, c) => a + b + c)
-    expect(add3()(1)()(2, 3), is, 6)
-  },
-
   "is idempotent"() {
     let add = curry(function add(a, b) { return a + b })
     add = curry(add)
