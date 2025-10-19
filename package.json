@@ -1,6 +1,6 @@
 {
   "name": "@benchristel/taste",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "A fast, modular test library for frontend JS",
   "keywords": [
     "auto",
