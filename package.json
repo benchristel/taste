@@ -55,6 +55,8 @@
   "types": "./index.d.ts",
   "dependencies": {
     "@longlast/curry": "^0.6.0",
+    "@longlast/equals": "^0.5.8",
+    "@longlast/function-provenance": "^0.0.2",
     "@longlast/symbols": "^1.1.0"
   }
 }

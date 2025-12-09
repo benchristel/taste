@@ -3,7 +3,7 @@ import {
 } from "./formatting.js"
 
 import {test, expect} from "./testing.js"
-import {is} from "./predicates.js"
+import {equals, is} from "./predicates.js"
 import {curry} from "./curry.js"
 
 test("repeat", {
@@ -283,6 +283,10 @@ test("pretty", {
         1
       )
     `)
+  },
+
+  "prints partial arguments passed to Taste's `equals`"() {
+    expect(pretty(equals(1)), is, "equals(1)")
   },
 
   "pretty-formats function arguments"() {

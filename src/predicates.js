@@ -1,43 +1,22 @@
-import {curry, partialArgs, originalFunction} from "./curry.js"
+import {$getBoundArguments, $unapplied} from "@longlast/symbols"
+import {equalsWith} from "@longlast/equals"
+import {getBoundArguments} from "@longlast/function-provenance"
+import {curry} from "./curry.js"
 
 export const which = curry(function(predicate, x) {
   return predicate(x)
 }, "which")
 
-export const equals = curry(function(a, b) {
-  if (isCustomMatcher(a)) {
-    return a(b)
-  }
-  if (Array.isArray(a) && Array.isArray(b)) {
-    return a.length === b.length
-      && a.every((_, i) => equals(a[i], b[i]))
-  }
-  if (a instanceof Function && b instanceof Function) {
-    if (originalFunction(a) && originalFunction(a) === originalFunction(b)) {
-      return equals(partialArgs(a), partialArgs(b))
+export const equals = equalsWith({
+  override(a, b) {
+    if (typeof a === "function" && a[$unapplied] === which) {
+      return getBoundArguments(a).length === 1 && a(b)
     }
-    return a === b
   }
-  if (a instanceof Date && b instanceof Date) {
-    return a.toISOString() === b.toISOString()
-  }
-  if (a instanceof Set && b instanceof Set) {
-    return a.size === b.size
-      && [...a.values()].every(v => b.has(v))
-  }
-  if (a instanceof Error && b instanceof Error) {
-    return a.message === b.message
-      && a.__proto__.constructor === b.__proto__.constructor
-  }
-  if (isObject(a) && isObject(b)) {
-    const aKeys = Object.keys(a)
-    const bKeys = Object.keys(b)
-    return aKeys.length === bKeys.length
-      && aKeys.every(k => equals(a[k], b[k]))
-      && a.__proto__?.constructor === b.__proto__?.constructor
-  }
-  return a === b
-}, "equals")
+})
+
+equals.displayName = "equals"
+equals[$getBoundArguments] = () => []
 
 export const is = curry(function(a, b) {
   return a === b
@@ -50,13 +29,3 @@ export const not = curry(function(predicate, subject, ...args) {
 export const isBlank = curry(function(s) {
   return /^\s*$/.test(s)
 }, "isBlank")
-
-function isObject(x) {
-  return !!x && typeof x === "object"
-}
-
-function isCustomMatcher(f) {
-  return f instanceof Function
-    && originalFunction(f) === which
-    && partialArgs(f).length === 1
-}
